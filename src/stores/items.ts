@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { Item } from "../types";
 
 export const useItemsStore = defineStore("items", () => {
@@ -121,6 +121,10 @@ export const useItemsStore = defineStore("items", () => {
   function remove(id: string): void {
     delete source.value[id];
   }
+
+  watch(source, (v) => {
+    console.log("items", v);
+  }, { deep: true });
 
   return {
     layers,

@@ -29,7 +29,7 @@ export type Item = {
 
 export type PropDefinition = (
   {
-    type: "range",
+    type: "slider",
     default?: number,
     min: number,
     max: number,

@@ -6,14 +6,14 @@ export const itemMeta = {
     propsDefinition: {
       width: {
         label: "Width",
-        type: "range",
+        type: "slider",
         default: 100,
         min: 0,
         max: 1000,
       },
       height: {
         label: "Height",
-        type: "range",
+        type: "slider",
         default: 100,
         min: 0,
         max: 1000,
