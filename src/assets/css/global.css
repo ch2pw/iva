@@ -11,6 +11,7 @@
 :root {
   --background: #ffffff;
 
+  --panel: #f5f5f5;
   --panel-odd: #f5f5f5;
   --panel-even: #fff;
 
@@ -26,7 +27,15 @@
   --primary-darken-1: #1f4752;
   --primary-darken-2: #001b25;
 
+  --secondary: #7e6c49;
+  --secondary-darken-1: #604f2d;
+  --secondary-darken-2: #3b2b07;
+
   --font-family: "Inter", "Noto Sans JP", sans-serif;
+  
+  --font-size: 15px;
+  --font-size-small: 12px;
+  --font-size-large: 18px;
 }
 
 * {
@@ -34,6 +43,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: var(--font-family);
+  font-size: var(--font-size);
   font-weight: 400;
 
   -webkit-font-smoothing: antialiased;
@@ -43,4 +53,8 @@
 body {
   background-color: var(--background);
   color: var(--text);
+}
+
+button {
+  all: unset;
 }

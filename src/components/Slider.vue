@@ -1,23 +1,34 @@
 <script lang="ts" setup>
-import { SliderRoot, SliderTrack, SliderRange, SliderThumb, SliderRootProps, SliderRootEmits } from 'reka-ui';
+import { SliderRoot, SliderTrack, SliderRange, SliderThumb, TooltipContent, TooltipPortal, TooltipTrigger, TooltipRoot, TooltipProvider } from 'reka-ui';
 
 defineOptions({
   inheritAttrs: false,
 })
-const props = defineProps<SliderRootProps>();
-const emit = defineEmits<SliderRootEmits>();
+const props = defineProps<{ defaultValue?: number }>();
+const model = defineModel<number>();
+model.value = props.defaultValue;
 </script>
 
 <template>
-  <SliderRoot :class="$style.sliderRoot" v-bind="props" v-on="{
-    'update:modelValue': (v: number[]) => emit('update:modelValue', v),
-    'valueCommit': (v: number[]) => emit('valueCommit', v),
-  }">
-    <SliderTrack :class="$style.sliderTrack">
-      <SliderRange :class="$style.sliderRange"></SliderRange>
-    </SliderTrack>
-    <SliderThumb :class="$style.sliderThumb" />
-  </SliderRoot>
+  <TooltipProvider :delay-duration="0">
+    <SliderRoot :class="$style.sliderRoot" v-bind="$attrs" :model-value="[model!]"
+      @update:model-value="model = $event![0]">
+      <SliderTrack :class="$style.sliderTrack">
+        <SliderRange :class="$style.sliderRange"></SliderRange>
+      </SliderTrack>
+      <TooltipRoot disable-closing-trigger>
+        <TooltipTrigger as-child>
+          <SliderThumb :class="$style.sliderThumb" />
+        </TooltipTrigger>
+
+        <TooltipPortal>
+          <TooltipContent :class="$style.tooltipContent" :side-offset="6">
+            {{ model }}
+          </TooltipContent>
+        </TooltipPortal>
+      </TooltipRoot>
+    </SliderRoot>
+  </TooltipProvider>
 </template>
 
 <style module>
@@ -51,5 +62,13 @@ const emit = defineEmits<SliderRootEmits>();
   height: 10px;
   border-radius: 9999px;
   background-color: var(--primary);
+}
+
+.tooltipContent {
+  z-index: 99999;
+  background-color: var(--panel);
+  border: solid 1px var(--divider);
+  padding: 5px;
+  border-radius: 5px;
 }
 </style>

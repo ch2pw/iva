@@ -1,29 +1,20 @@
-export type Position = {
-  x: number;
-  y: number;
-};
-
 export type TimeRange = {
   start: number;
   end: number;
 }
 
 export type Filter = {
-  name: string;
-
   kind: string;
+  name: string;
   props: Record<string, any>;
 };
 
 export type Item = {
   id: string;
-  name: string;
-  position: Position;
-  time: TimeRange;
-
-  filters: Filter[];
-
   kind: string;
+  name: string;
+  time: TimeRange;
+  filters: Filter[];
   props: Record<string, any>;
 };
 
@@ -48,7 +39,13 @@ export type PropDefinition = (
     default?: string,
   } | {
     type: "select",
-    options: string[],
+    options: {
+      value: string,
+      label: string,
+    }[],
+    default?: string,
+  } | {
+    type: "file",
     default?: string,
   }
 ) & {

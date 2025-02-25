@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@internationalized/number':
+        specifier: ^3.6.0
+        version: 3.6.0
+      '@tabler/icons-vue':
+        specifier: ^3.30.0
+        version: 3.30.0(vue@3.5.13(typescript@5.6.3))
       '@tauri-apps/api':
         specifier: ^2
         version: 2.2.0
@@ -327,6 +333,14 @@ packages:
 
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
+
+  '@tabler/icons-vue@3.30.0':
+    resolution: {integrity: sha512-n+lJQVx1Z9doh1r4K9NQfe2MIoUzxW6lzVLyZDoydFb8zfKn872ztfc+BR0OfCyCYf1of4Gxv3TIPC1VuFBu4Q==}
+    peerDependencies:
+      vue: '>=3.0.1'
+
+  '@tabler/icons@3.30.0':
+    resolution: {integrity: sha512-c8OKLM48l00u9TFbh2qhSODMONIzML8ajtCyq95rW8vzkWcBrKRPM61tdkThz2j4kd5u17srPGIjqdeRUZdfdw==}
 
   '@tanstack/virtual-core@3.13.0':
     resolution: {integrity: sha512-NBKJP3OIdmZY3COJdWkSonr50FMVIi+aj5ZJ7hI/DTpEKg2RMfo/KvP8A3B/zOSpMgIe52B5E2yn7rryULzA6g==}
@@ -868,6 +882,13 @@ snapshots:
   '@swc/helpers@0.5.15':
     dependencies:
       tslib: 2.8.1
+
+  '@tabler/icons-vue@3.30.0(vue@3.5.13(typescript@5.6.3))':
+    dependencies:
+      '@tabler/icons': 3.30.0
+      vue: 3.5.13(typescript@5.6.3)
+
+  '@tabler/icons@3.30.0': {}
 
   '@tanstack/virtual-core@3.13.0': {}
 
