@@ -1,22 +1,26 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
 import { itemMeta } from '../item-meta';
 import { duration } from '../scripts/duration';
 import { useItemsStore } from '../stores/items';
 
 const itemsStore = useItemsStore();
+const zoom = ref(0.5);
 </script>
 
 <template>
   <div :class="$style.container">
     <div :class="$style.ruler">
-      <div v-for="i in 50" :key="i" :class="$style.mark" :style="{ left: (i - 1) * 100 + 'px' }">{{ (i - 1) * 100 }}ms
+      <div v-for="i in 100" :key="i" :class="$style.mark" :style="{ width: 100 * zoom + 'px' }">
+        {{ (i - 1) * 100 }}
       </div>
     </div>
     <div v-for="i in 50" :key="i" :class="$style.layer">
-      <div v-for="item in itemsStore.layers[i] ?? []" :key="item.id" :class="[$style.item, { [$style.selected]: itemsStore.selectedItem === item }]"
-        :style="{ left: item.time.start + 'px', width: duration(item.time) + 'px', '--color': itemMeta[item.kind].color }"
+      <div v-for="item in itemsStore.layers[i] ?? []" :key="item.id"
+        :class="[$style.item, { [$style.selected]: itemsStore.selectedItem === item }]"
+        :style="{ left: item.time.start * zoom + 'px', width: duration(item.time) * zoom + 'px', '--color': itemMeta[item.kind].color }"
         @click="itemsStore.selectedItem = item">
-        {{ item.name }}({{ itemMeta[item.kind].name }})
+        {{ item.name }}
       </div>
     </div>
   </div>
@@ -26,14 +30,16 @@ const itemsStore = useItemsStore();
 .container {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  width: fit-content;
+  overflow: auto;
 }
 
 .ruler {
   display: flex;
-  position: sticky;
+  position: relative;
   top: 0;
   flex-direction: row;
+  width: fit-content;
   height: 25px;
   border-bottom: 1px solid var(--divider);
 }
@@ -42,9 +48,7 @@ const itemsStore = useItemsStore();
   display: flex;
   align-items: center;
   justify-content: left;
-  position: absolute;
   height: 25px;
-  width: 100px;
   padding: 5px;
   border-right: 1px solid var(--divider);
   color: var(--text-transparent);
@@ -54,6 +58,7 @@ const itemsStore = useItemsStore();
   display: flex;
   position: relative;
   flex-direction: row;
+  width: 100%;
   height: 25px;
   border-bottom: 1px solid var(--divider);
 }

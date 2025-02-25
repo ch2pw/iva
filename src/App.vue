@@ -42,7 +42,8 @@ import Timeline from './panes/Timeline.vue';
 }
 
 .pane {
-  overflow-y: auto !important; /* disable `overflow: hidden` by reka-ui */
+  overflow: auto !important; /* disable `overflow: hidden` by reka-ui */
+  border: solid 1px var(--divider);
 }
 
 .handleH {
