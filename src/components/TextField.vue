@@ -10,7 +10,7 @@ const model = defineModel<string>();
 
 <template>
   <textarea :class="$style.textarea" v-if="multiline" v-bind="$attrs" v-model="model" />
-  <input type="text" v-else v-bind="$attrs" v-model="model" />
+  <input :class="$style.input" type="text" v-else v-bind="$attrs" v-model="model" />
 </template>
 
 <style module>
@@ -19,5 +19,9 @@ const model = defineModel<string>();
   resize: vertical;
   min-height: 100px;
   width: 100%;
+}
+
+.input {
+  padding: 5px;
 }
 </style>

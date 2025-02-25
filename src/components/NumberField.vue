@@ -7,11 +7,11 @@ import { NumberFieldDecrement, NumberFieldIncrement, NumberFieldInput, NumberFie
 <template>
   <NumberFieldRoot :class="$style.numberFieldRoot">
     <NumberFieldDecrement :class="$style.numberFieldDecrement">
-      <IconMinus />
+      <IconMinus :size="13" />
     </NumberFieldDecrement>
     <NumberFieldInput :class="$style.numberFieldInput" />
     <NumberFieldIncrement :class="$style.numberFieldIncrement">
-      <IconPlus />
+      <IconPlus :size="13" />
     </NumberFieldIncrement>
   </NumberFieldRoot>
 </template>
@@ -19,7 +19,7 @@ import { NumberFieldDecrement, NumberFieldIncrement, NumberFieldInput, NumberFie
 <style module>
 .numberFieldRoot {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 5px;
   width: 100%;
 }
@@ -27,12 +27,11 @@ import { NumberFieldDecrement, NumberFieldIncrement, NumberFieldInput, NumberFie
 .numberFieldInput {
   flex: 1;
   min-width: 0;
-  height: 20px;
   border: none;
   border-radius: 5px;
-  padding: 0 5px;
+  padding: 5px;
   text-align: center;
-  background-color: var(--divider);
+  border: solid 1px var(--divider);
   color: var(--text);
 }
 
@@ -41,15 +40,14 @@ import { NumberFieldDecrement, NumberFieldIncrement, NumberFieldInput, NumberFie
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  padding: 5px;
   border-radius: 5px;
-  background-color: var(--primary);
-  color: white;
+  background-color: var(--button);
+  color: var(--text);
 }
 
 .numberFieldDecrement:hover,
 .numberFieldIncrement:hover {
-  background-color: var(--primary-darken-1);
+  background-color: var(--button-hover);
 }
 </style>

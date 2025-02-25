@@ -3,6 +3,7 @@ import { PropDefinition } from "./types";
 export const itemMeta = {
   rect: {
     name: "四角形",
+    color: "#4e7682",
     propsDefinition: {
       x: {
         label: "X",
@@ -70,6 +71,7 @@ export const itemMeta = {
   },
   circle: {
     name: "円",
+    color: "#826a51",
     propsDefinition: {
       x: {
         label: "X",
@@ -97,6 +99,7 @@ export const itemMeta = {
   },
   text: {
     name: "文字列",
+    color: "#62765a",
     propsDefinition: {
       x: {
         label: "X",
@@ -130,6 +133,7 @@ export const itemMeta = {
   },
   image: {
     name: "画像",
+    color: "#606f8c",
     propsDefinition: {
       x: {
         label: "X",
@@ -163,6 +167,7 @@ export const itemMeta = {
   },
   audio: {
     name: "音声",
+    color: "#87636e",
     propsDefinition: {
       src: {
         label: "ファイル",
@@ -173,9 +178,11 @@ export const itemMeta = {
   // for debug
   unknown: {
     name: "Unknown",
+    color: "#000000",
     propsDefinition: {},
   }
 } as Record<string, {
   name: string;
+  color: string;
   propsDefinition: Record<string, PropDefinition>;
 }>;

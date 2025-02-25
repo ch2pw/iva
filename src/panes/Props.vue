@@ -2,6 +2,7 @@
 import NumberField from '../components/NumberField.vue';
 import Slider from '../components/Slider.vue';
 import TextField from '../components/TextField.vue';
+import Select from '../components/Select.vue';
 import { itemMeta } from '../item-meta';
 import { useItemsStore } from '../stores/items';
 import { computed } from 'vue';
@@ -26,15 +27,14 @@ const propsDefinition = computed(() => itemsStore.selectedItem ? itemMeta[itemsS
         <Slider v-else-if="definition.type === 'slider'" v-model="itemsStore.selectedItem.props[prop]"
           :min="definition.min" :max="definition.max" :step="definition.step" :default-value="definition.default" />
 
-        <TextField v-else-if="definition.type === 'text'" v-model="itemsStore.selectedItem.props[prop]" :multiline="definition.multiline" />
+        <TextField v-else-if="definition.type === 'text'" v-model="itemsStore.selectedItem.props[prop]"
+          :multiline="definition.multiline" />
 
         <input type="color" v-else-if="definition.type === 'color'" :class="$style.color"
           v-model="itemsStore.selectedItem.props[prop]" />
 
-        <select v-model="itemsStore.selectedItem.props[prop]" v-else-if="definition.type === 'select'">
-          <option v-for="option in definition.options" :key="option.value" :value="option.value">{{ option.label }}
-          </option>
-        </select>
+        <Select v-else-if="definition.type === 'select'" v-model="itemsStore.selectedItem.props[prop]"
+          :options="definition.options" />
       </div>
     </template>
   </div>

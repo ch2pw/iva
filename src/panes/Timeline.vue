@@ -14,7 +14,7 @@ const itemsStore = useItemsStore();
     </div>
     <div v-for="i in 50" :key="i" :class="$style.layer">
       <div v-for="item in itemsStore.layers[i] ?? []" :key="item.id" :class="[$style.item, { [$style.selected]: itemsStore.selectedItem === item }]"
-        :style="{ left: item.time.start + 'px', width: duration(item.time) + 'px' }"
+        :style="{ left: item.time.start + 'px', width: duration(item.time) + 'px', '--color': itemMeta[item.kind].color }"
         @click="itemsStore.selectedItem = item">
         {{ item.name }}({{ itemMeta[item.kind].name }})
       </div>
@@ -69,12 +69,15 @@ const itemsStore = useItemsStore();
 
   height: 25px;
   top: 0;
-  background: linear-gradient(135deg, var(--primary), var(--primary-darken-1));
+  --color-1: var(--color);
+  --color-2: color-mix(in oklch, var(--color-1), black 30%);
+  --color-3: color-mix(in oklch, var(--color-1), black 60%);
+  background: linear-gradient(135deg, var(--color-1), var(--color-2));
   color: var(--text-on-primary);
   padding: 2px 10px;
 }
 
 .selected {
-  background: linear-gradient(135deg, var(--primary-darken-1), var(--primary-darken-2));
+  background: linear-gradient(135deg, var(--color-2), var(--color-3));
 }
 </style>
