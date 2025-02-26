@@ -3,13 +3,22 @@ import { ref } from 'vue';
 import { itemMeta } from '../item-meta';
 import { duration } from '../scripts/duration';
 import { useItemsStore } from '../stores/items';
+import { useTimeStore } from '../stores/time';
 
 const itemsStore = useItemsStore();
 const zoom = ref(0.5);
+const timeStore = useTimeStore();
+
+function outSideClick(event: MouseEvent) {
+  itemsStore.selectedItem = null;
+  const elementX = (event.currentTarget as HTMLElement).getBoundingClientRect().left;
+  timeStore.time = (event.clientX - elementX) / zoom.value;
+}
 </script>
 
 <template>
-  <div :class="$style.container">
+  <div :class="$style.container" @click="outSideClick">
+    <div :class="$style.time" :style="{ left: timeStore.time * zoom + 'px' }"></div>
     <div :class="$style.ruler">
       <div v-for="i in 100" :key="i" :class="$style.mark" :style="{ width: 100 * zoom + 'px' }">
         {{ (i - 1) * 100 }}
@@ -19,7 +28,7 @@ const zoom = ref(0.5);
       <div v-for="item in itemsStore.layers[i] ?? []" :key="item.id"
         :class="[$style.item, { [$style.selected]: itemsStore.selectedItem === item }]"
         :style="{ left: item.time.start * zoom + 'px', width: duration(item.time) * zoom + 'px', '--color': itemMeta[item.kind].color }"
-        @click="itemsStore.selectedItem = item">
+        @click.stop="itemsStore.selectedItem = item">
         {{ item.name }}
       </div>
     </div>
@@ -29,9 +38,21 @@ const zoom = ref(0.5);
 <style module>
 .container {
   display: flex;
+  position: relative;
   flex-direction: column;
   width: fit-content;
   overflow: auto;
+}
+
+.time {
+  display: flex;
+  position: absolute;
+  top: 0;
+  flex-direction: column;
+  width: 1px;
+  height: 100%;
+  z-index: 9999;
+  border-left: 1px solid red;
 }
 
 .ruler {

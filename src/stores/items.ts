@@ -5,109 +5,37 @@ import { Item } from "../types";
 export const useItemsStore = defineStore("items", () => {
   const source = ref({
     "1aea6df4-9bdc-4b7b-b795-96c1346a37ab": {
+      id: "1aea6df4-9bdc-4b7b-b795-96c1346a37ab",
       layer: 1,
-      item: {
-        id: "1aea6df4-9bdc-4b7b-b795-96c1346a37ab",
-        name: "Item 1",
-        time: { start: 0, end: 200 },
-        filters: [],
-        kind: "rect",
-        props: {
-          x: 0,
-          y: 0,
-          width: 100,
-          height: 100,
-          align: "center",
-          color: "#4e7682",
-        },
+      name: "Item 1",
+      time: { start: 0, end: 200 },
+      filters: [],
+      kind: "rect",
+      props: {
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+        align: "center",
+        color: "#4e7682",
       },
     },
-    "18350b69-4855-45b6-8d80-f3d8b289fccf": {
-      layer: 1,
-      item: {
-        id: "18350b69-4855-45b6-8d80-f3d8b289fccf",
-        name: "Item 2",
-        time: { start: 400, end: 600 },
-        filters: [],
-        kind: "text",
-        props: {
-          x: 0,
-          y: 0,
-          text: "Hello",
-          align: "center",
-          color: "#4e7682",
-        },
-      },
-    },
-    "c7f02e77-1a39-42cf-baf9-499d6ee3f442": {
-      layer: 2,
-      item: {
-        id: "c7f02e77-1a39-42cf-baf9-499d6ee3f442",
-        name: "Item 3",
-        time: { start: 100, end: 800 },
-        filters: [],
-        kind: "circle",
-        props: {
-          x: 0,
-          y: 0,
-          radius: 50,
-          align: "center",
-          color: "#4e7682",
-        },
-      },
-    },
-    "f1d4b4c4-2f0b-4b5f-8f4b-7f1f4e0c1b1d": {
-      layer: 2,
-      item: {
-        id: "f1d4b4c4-2f0b-4b5f-8f4b-7f1f4e0c1b1d",
-        name: "Item 4",
-        time: { start: 900, end: 2000 },
-        filters: [],
-        kind: "image",
-        props: {
-          x: 0,
-          y: 0,
-          width: 100,
-          height: 100,
-          align: "center",
-          src: "https://dummyimage.com/100x100/000"
-        },
-      },
-    },
-    "f1d4b4c4-2f0b-4b5f-8f4b-7f1f4e0c1b1e": {
-      layer: 3,
-      item: {
-        id: "f1d4b4c4-2f0b-4b5f-8f4b-7f1f4e0c1b1e",
-        name: "Item 5",
-        time: { start: 300, end: 700 },
-        filters: [],
-        kind: "rect",
-        props: {
-          x: 0,
-          y: 0,
-          width: 100,
-          height: 100,
-          align: "center",
-          color: "#4e7682",
-        },
-      },
-    },
-  } as Record<string, { layer: number, item: Item }>);
+  } as Record<string, Item>);
 
   const selected = ref<string | null>(null);
 
   const layers = computed(() => {
     const layers: Record<number, Item[]> = {};
-    for (const { layer, item } of Object.values(source.value)) {
-      if (!layers[layer]) layers[layer] = [];
-      layers[layer].push(item);
+    for (const item of Object.values(source.value)) {
+      if (!layers[item.layer]) layers[item.layer] = [];
+      layers[item.layer].push(item);
     }
     return layers
   });
 
   const items = computed(() => {
     const items: Record<string, Item> = {};
-    for (const { item } of Object.values(source.value)) {
+    for (const item of Object.values(source.value)) {
       items[item.id] = item;
     }
     return items;
@@ -119,11 +47,11 @@ export const useItemsStore = defineStore("items", () => {
   });
 
   function update(item: Item): void {
-    source.value[item.id].item = item;
+    source.value[item.id] = item;
   }
 
-  function add(layer: number, item: Item): void {
-    source.value[item.id] = { layer, item };
+  function add(item: Item): void {
+    source.value[item.id] = item;
   }
 
   function remove(id: string): void {
@@ -135,6 +63,7 @@ export const useItemsStore = defineStore("items", () => {
   }, { deep: true });
 
   return {
+    source,
     layers,
     items,
     selectedItem,

@@ -11,6 +11,7 @@ export type Filter = {
 
 export type Item = {
   id: string;
+  layer: number;
   kind: string;
   name: string;
   time: TimeRange;
