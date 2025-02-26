@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useRenderStore } from '../stores/render';
 
 const renderStore = useRenderStore();
-const src = computed(() => {
-  return `data:image/png;base64,${renderStore.rendered}`;
-});
 </script>
 
 <template>
-  <img :class="$style.screen" :src="src" />
+  <img :class="$style.screen" :src="`data:image/png;base64,${renderStore.rendered}`" />
 </template>
 
 <style module>

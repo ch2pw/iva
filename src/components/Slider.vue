@@ -6,7 +6,7 @@ defineOptions({
 })
 const props = defineProps<{ defaultValue?: number }>();
 const model = defineModel<number>();
-model.value = props.defaultValue;
+if (!model.value) model.value = props.defaultValue ?? 0;
 </script>
 
 <template>

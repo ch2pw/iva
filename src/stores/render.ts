@@ -2,23 +2,22 @@ import { defineStore } from "pinia";
 import { useItemsStore } from "./items";
 import { useTimeStore } from "./time";
 import { ref, watch } from "vue";
-import { invoke } from '@tauri-apps/api/core'
+import { invoke } from '@tauri-apps/api/core';
 
 export const useRenderStore = defineStore("render", () => {
   const itemsStore = useItemsStore();
   const time = useTimeStore();
   const rendered = ref("");
-
-  const prevRender = ref(0);
+  const isRendering = ref(false);
 
   render();
 
   watch([() => itemsStore.source, () => time.time], async () => {
-    console.log(prevRender.value);
-    if (prevRender.value + 100 < Date.now()) {
-      prevRender.value = Date.now();
+    if (!isRendering.value) {
       console.log("Re-render fired");
+      isRendering.value = true;
       await render();
+      isRendering.value = false;
       console.log("Re-render complete");
     }
   }, { deep: true });

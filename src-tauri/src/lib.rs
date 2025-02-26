@@ -1,32 +1,40 @@
 use std::{collections::HashMap, io::Cursor};
 
 use base64::prelude::*;
-use image::{ImageBuffer, Rgb};
+use image::{imageops::overlay, ImageBuffer, Rgb};
+use imageproc::{drawing::draw_filled_rect_mut, rect::Rect};
 use types::Item;
 use uuid::Uuid;
 
 mod types;
 
+const SCREEN_WIDTH: u32 = 1980;
+const SCREEN_HEIGHT: u32 = 1080;
+
+fn parse_color(color: &str) -> Rgb<u8> {
+    let color = color.trim_start_matches('#');
+    let r = u8::from_str_radix(&color[0..2], 16).unwrap();
+    let g = u8::from_str_radix(&color[2..4], 16).unwrap();
+    let b = u8::from_str_radix(&color[4..6], 16).unwrap();
+    Rgb([r, g, b])
+}
+
 #[tauri::command]
 async fn render(items: HashMap<Uuid, Item>, time: u64) -> Result<String, String> {
-    let width = 1980;
-    let height = 1080;
-
     let item = items.values().find(|item| item.kind == "rect").unwrap();
-    println!("{:?}", item);
-    let x1 = item.props["x"].as_int();
-    let y1 = item.props["y"].as_int();
-    let x2 = x1 + item.props["width"].as_int();
-    let y2 = y1 + item.props["height"].as_int();
+    let x1 = item.props["x"].as_int() as i64;
+    let y1 = item.props["y"].as_int() as i64;
+    let width = item.props["width"].as_int() as u32;
+    let height = item.props["height"].as_int() as u32;
+    let color = item.props["color"].as_string();
 
-    let mut img: ImageBuffer<Rgb<u8>, _> = ImageBuffer::from_pixel(width, height, Rgb([255, 255, 255]));
+    let black: Rgb<u8> = Rgb([0, 0, 0]);
+    let color: Rgb<u8> = parse_color(&color);
 
-    let red = Rgb([255, 0, 0]);
-    for x in x1..x2 {
-        for y in y1..y2 {
-            img.put_pixel(x as u32, y as u32, red);
-        }
-    }
+    let mut img = ImageBuffer::from_pixel(SCREEN_WIDTH, SCREEN_HEIGHT, black);
+    let mut rect = ImageBuffer::from_pixel(width, height, black);
+    draw_filled_rect_mut(&mut rect, Rect::at(0, 0).of_size(width, height), color);
+    overlay(&mut img, &rect, x1, y1);
 
     let mut bytes = Vec::new();
     img.write_to(&mut Cursor::new(&mut bytes), image::ImageFormat::Png).unwrap();
