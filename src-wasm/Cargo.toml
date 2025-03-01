@@ -1,0 +1,48 @@
+[package]
+authors = ["1Step621 <onestep621@gmail.com>"]
+description = "The wasm part of the Iva editor"
+edition = "2024"
+license = "MIT/Apache-2.0"
+name = "src-wasm"
+repository = "https://github.com/1Step621/iva"
+version = "0.1.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+lto = true
+opt-level = "s"
+
+[profile.dev]
+debug-assertions = true
+
+[dependencies]
+anyhow = "1.0.96"
+cgmath = "0.18.0"
+console_error_panic_hook = "0.1.7"
+futures = "0.3.31"
+image = "0.25.5"
+imageproc = "0.25.0"
+serde = {version = "1.0.218", features = ["derive"]}
+serde-wasm-bindgen = "0.6.5"
+serde_json = "1.0.139"
+tsify-next = "0.5.5"
+wasm-bindgen = {version = "0.2.100", features = ["serde-serialize"]}
+wasm-bindgen-futures = "0.4.50"
+web-sys = {version = "0.3.77", features = [
+  "console",
+  "Document",
+  "HtmlCanvasElement",
+  "CanvasRenderingContext2d",
+  "Element",
+  "Performance",
+  "KeyboardEvent",
+  "CssStyleDeclaration",
+  "TextMetrics",
+  "Window",
+  "ImageData",
+]}
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.50"

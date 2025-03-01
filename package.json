@@ -1,5 +1,11 @@
 {
   "name": "iva",
+  "author": {
+    "name": "1Step621",
+    "email": "onestep621@gmail.com"
+  },
+  "license": "MIT/Apache-2.0",
+  "description": "The video editor alternative to AviUtl.",
   "private": true,
   "version": "0.1.0",
   "type": "module",

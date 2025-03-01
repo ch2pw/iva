@@ -1,6 +1,6 @@
 # Iva
 
-The Video Editor alternative to AviUtl. 
+The video editor alternative to AviUtl.   
 Work in progress...
 
 ```rs
