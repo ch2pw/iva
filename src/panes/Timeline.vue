@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { itemMeta } from '../item-meta';
-import { duration, inRange } from '../scripts/timerange-utils';
+import { duration, contains } from '../scripts/timerange-utils';
 import { useItemsStore } from '../stores/items';
 import { useTimeStore } from '../stores/time';
 
@@ -12,7 +12,7 @@ const timeStore = useTimeStore();
 function outSideClick(event: MouseEvent) {
   const elementX = (event.currentTarget as HTMLElement).getBoundingClientRect().left;
   timeStore.time = (event.clientX - elementX) / zoom.value;
-  if (itemsStore.selectedItem && !inRange(itemsStore.selectedItem.time, timeStore.time)) {
+  if (itemsStore.selectedItem && !contains(itemsStore.selectedItem.time, timeStore.time)) {
     itemsStore.selectedItem = null;
   }
 }

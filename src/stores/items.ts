@@ -20,6 +20,20 @@ export const useItemsStore = defineStore("items", () => {
         color: "#4e7682",
       },
     },
+    "2aea6df4-9bdc-4b7b-b795-96c1346a37ab": {
+      id: "2aea6df4-9bdc-4b7b-b795-96c1346a37ab",
+      layer: 2,
+      name: "Item 2",
+      time: { start: 100, end: 300 },
+      filters: [],
+      kind: "circle",
+      props: {
+        x: 200,
+        y: 200,
+        radius: 50,
+        color: "#4e7682",
+      },
+    },
   } as Record<string, Item>);
 
   const selected = ref<string | null>(null);

@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use std::{collections::HashMap, time::Duration};
 
 use serde::{Deserialize, Serialize};
@@ -17,6 +18,10 @@ impl TimeRange {
     pub fn duration(&self) -> Duration {
         Duration::from_millis(self.end - self.start)
     }
+
+    pub fn contains(&self, time: u64) -> bool {
+        self.start <= time && time <= self.end
+    }
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
@@ -29,6 +34,7 @@ pub struct Filter {
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
 pub struct Item {
     pub id: String,
+    pub layer: i64,
     pub kind: String,
     pub name: String,
     pub time: TimeRange,

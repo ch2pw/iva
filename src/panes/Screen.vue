@@ -11,7 +11,7 @@ init();
 watch([() => itemsStore.items, () => timeStore.time], async (v) => {
   console.log("rendering started");
   const start = performance.now();
-  await render(v[0], BigInt(0));
+  await render(v[0], BigInt(v[1]));
   const end = performance.now();
   console.log("rendered in", end - start, "ms");
 }, { deep: true });
