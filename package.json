@@ -10,8 +10,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "wasm:dev": "cd src-wasm && cargo watch -w src/*.rs -s 'wasm-pack build --target web --dev' & cd ..",
+    "wasm:build": "cd src-wasm && wasm-pack build --target web --release && cd ..",
+    "dev": "pnpm wasm:dev & vite",
+    "build": "pnpm wasm:build && vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "tauri": "tauri"
   },
