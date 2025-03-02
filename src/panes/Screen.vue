@@ -35,7 +35,7 @@ watch([() => itemsStore.layers, () => timeStore.time], (v) => {
 }
 
 .screen {
-  height: 100%;
+  max-height: 100%;
   max-width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;

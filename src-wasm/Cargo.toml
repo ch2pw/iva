@@ -20,18 +20,13 @@ debug-assertions = true
 [dependencies]
 ab_glyph = "0.2.29"
 anyhow = "1.0.96"
-cgmath = "0.18.0"
 console_error_panic_hook = "0.1.7"
-futures = "0.3.31"
-image = "0.25.5"
-imageproc = {git = "https://github.com/image-rs/imageproc.git"}
-itertools = "0.14.0"
+src-core = {path = "../src-core"}
 serde = {version = "1.0.218", features = ["derive"]}
 serde-wasm-bindgen = "0.6.5"
 serde_json = "1.0.139"
 tsify-next = "0.5.5"
 wasm-bindgen = {version = "0.2.100", features = ["serde-serialize"]}
-wasm-bindgen-futures = "0.4.50"
 web-sys = {version = "0.3.77", features = [
   "console",
   "Document",
@@ -45,6 +40,7 @@ web-sys = {version = "0.3.77", features = [
   "Window",
   "ImageData",
 ]}
+once_cell = "1.20.3"
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.50"
