@@ -6,7 +6,7 @@ import { useItemsStore } from '../stores/items';
 import { useTimeStore } from '../stores/time';
 
 const itemsStore = useItemsStore();
-const zoom = ref(0.5);
+const zoom = ref(0.3);
 const timeStore = useTimeStore();
 
 function outSideClick(event: MouseEvent) {
@@ -22,8 +22,8 @@ function outSideClick(event: MouseEvent) {
   <div :class="$style.container" @click="outSideClick">
     <div :class="$style.time" :style="{ left: timeStore.time * zoom + 'px' }"></div>
     <div :class="$style.ruler">
-      <div v-for="i in 100" :key="i" :class="$style.mark" :style="{ width: 100 * zoom + 'px' }">
-        {{ (i - 1) * 100 }}
+      <div v-for="i in 100" :key="i" :class="$style.mark" :style="{ width: 500 * zoom + 'px' }">
+        {{ (i - 1) * 500 }}
       </div>
     </div>
     <div v-for="i in 50" :key="i" :class="$style.layer">
@@ -69,12 +69,15 @@ function outSideClick(event: MouseEvent) {
 
 .mark {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: left;
-  height: 25px;
-  padding: 5px;
+  height: 1300px;
+  padding: 2px 5px;
   border-right: 1px solid var(--divider);
   color: var(--text-transparent);
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
 }
 
 .layer {

@@ -44,6 +44,7 @@ import Timeline from './panes/Timeline.vue';
 .pane {
   overflow: auto !important; /* disable `overflow: hidden` by reka-ui */
   border: solid 1px var(--divider);
+  position: relative;
 }
 
 .handleH {

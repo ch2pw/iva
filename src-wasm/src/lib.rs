@@ -2,10 +2,7 @@ use std::collections::HashMap;
 
 use ab_glyph::{FontRef, VariableFont};
 use image::ImageBuffer;
-use imageproc::{
-    drawing::{draw_filled_circle_mut, draw_filled_rect_mut, draw_text_mut},
-    rect::Rect,
-};
+use imageproc::{drawing::draw_text_mut, map::map_enumerated_pixels_mut_parallel};
 use types::Item;
 use wasm_bindgen::{Clamped, prelude::*};
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement, ImageData, window};
@@ -45,24 +42,44 @@ fn parse_color(color: &str) -> Rgba {
 }
 
 fn render_rect(img: &mut ImageBuffer<Rgba, Vec<u8>>, item: &Item) {
-    let x = item.props["x"].as_f64().unwrap() as i32;
-    let y = item.props["y"].as_f64().unwrap() as i32;
+    let x = item.props["x"].as_f64().unwrap() as u32;
+    let y = item.props["y"].as_f64().unwrap() as u32;
     let width = item.props["width"].as_f64().unwrap() as u32;
     let height = item.props["height"].as_f64().unwrap() as u32;
     let color = item.props["color"].as_str().unwrap();
     let color = parse_color(&color);
 
-    draw_filled_rect_mut(img, Rect::at(x, y).of_size(width, height), color);
+    if width <= 0 || height <= 0 {
+        return;
+    }
+
+    // draw_filled_rect_mut(img, Rect::at(x, y).of_size(width, height), color);
+    map_enumerated_pixels_mut_parallel(img, |px, py, pixel| {
+        if (x..x + width).contains(&px) && (y..y + height).contains(&py) {
+            color
+        } else {
+            pixel
+        }
+    });
 }
 
 fn render_circle(img: &mut ImageBuffer<Rgba, Vec<u8>>, item: &Item) {
-    let x = item.props["x"].as_f64().unwrap() as i32;
-    let y = item.props["y"].as_f64().unwrap() as i32;
-    let radius = item.props["radius"].as_f64().unwrap() as i32;
+    let x = item.props["x"].as_f64().unwrap() as u32;
+    let y = item.props["y"].as_f64().unwrap() as u32;
+    let radius = item.props["radius"].as_f64().unwrap() as u32;
     let color = item.props["color"].as_str().unwrap();
     let color = parse_color(&color);
 
-    draw_filled_circle_mut(img, (x, y), radius, color);
+    // draw_filled_circle_mut(img, (x, y), radius, color);
+    map_enumerated_pixels_mut_parallel(img, |px, py, pixel| {
+        let dx = px - x;
+        let dy = py - y;
+        if dx * dx + dy * dy <= radius * radius {
+            color
+        } else {
+            pixel
+        }
+    });
 }
 
 fn render_text(img: &mut ImageBuffer<Rgba, Vec<u8>>, item: &Item) {

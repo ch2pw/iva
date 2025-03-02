@@ -3,29 +3,49 @@ import { watch } from 'vue';
 import init, { render } from '../../src-wasm/pkg/src_wasm';
 import { useItemsStore } from '../stores/items';
 import { useTimeStore } from '../stores/time';
+import { IconPlayerPauseFilled, IconPlayerPlayFilled } from '@tabler/icons-vue';
 
 const itemsStore = useItemsStore();
 const timeStore = useTimeStore();
-init();
+init().then(() => render(itemsStore.layers, BigInt(timeStore.time)));
 
-watch([() => itemsStore.layers, () => timeStore.time], async (v) => {
-  // console.log("rendering started");
-  // const start = performance.now();
-  await render(v[0], BigInt(v[1]));
-  // const end = performance.now();
-  // console.log("rendered in", end - start, "ms");
+watch([() => itemsStore.layers, () => timeStore.time], (v) => {
+  render(v[0], BigInt(Math.round(v[1])));
 }, { deep: true });
 </script>
 
 <template>
-  <canvas id="screen" :class="$style.screen"></canvas>
+  <div :class="$style.container">
+    <canvas id="screen" :class="$style.screen"></canvas>
+    <button @click="timeStore.isPlaying = !timeStore.isPlaying" :class="$style.button">
+      <IconPlayerPauseFilled v-if="timeStore.isPlaying" />
+      <IconPlayerPlayFilled v-else />
+    </button>
+  </div>
 </template>
 
 <style module>
-.screen {
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
   width: 100%;
+  position: relative;
+}
+
+.screen {
+  height: 100%;
+  max-width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   margin: auto;
+}
+
+.button {
+  position: absolute;
+  height: min-content;
+  bottom: 0;
+  left: 0;
 }
 </style>
