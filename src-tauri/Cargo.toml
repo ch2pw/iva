@@ -15,11 +15,11 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 name = "iva_lib"
 
 [build-dependencies]
-tauri-build = {version = "2.0.6", features = []}
+tauri-build = {version = "2.0.6", features = [] }
 
 [dependencies]
-src-core = {path = "../src-core"}
-serde = {version = "1.0.218", features = ["derive"]}
+serde = {version = "1.0.218", features = ["derive"] }
 serde_json = "1.0.139"
-tauri = {version = "2.3.1", features = []}
+src-core = {path = "../src-core"}
+tauri = {version = "2.3.1", features = [] }
 tauri-plugin-opener = "2.2.6"

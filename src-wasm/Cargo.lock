@@ -1040,10 +1040,8 @@ dependencies = [
 name = "src-wasm"
 version = "0.1.0"
 dependencies = [
- "ab_glyph",
  "anyhow",
  "console_error_panic_hook",
- "once_cell",
  "serde",
  "serde-wasm-bindgen",
  "serde_json",
