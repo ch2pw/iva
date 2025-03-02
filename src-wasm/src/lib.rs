@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use src_core::types::Item;
+use iva_core::types::Item;
 use wasm_bindgen::{Clamped, prelude::*};
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement, ImageData, window};
 
@@ -50,7 +50,7 @@ pub fn render(layers: JsValue, time: u64) {
         .map(|(k, v)| (k.parse::<i32>().unwrap(), v.clone()))
         .collect::<HashMap<_, _>>();
 
-    let img = src_core::render(&layers, time);
+    let img = iva_core::render(&layers, time);
 
     let data = img.as_raw();
     let image_data = ImageData::new_with_u8_clamped_array(Clamped(data), SCREEN_WIDTH).unwrap();

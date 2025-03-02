@@ -1,6 +1,11 @@
+[workspace.package]
+authors = ["1Step621 <onestep621@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/1Step621/iva"
+
 [workspace]
-resolver = "2"
 members = ["src-core", "src-tauri", "src-wasm"]
+resolver = "2"
 
 [profile.release]
 lto = true

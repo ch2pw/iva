@@ -2063,12 +2063,41 @@ checksum = "d75a2a4b1b190afb6f5425f10f6a8f959d2ea0b9c2b1d79553551850539e4674"
 name = "iva"
 version = "0.1.0"
 dependencies = [
+ "iva-core",
  "serde",
  "serde_json",
- "src-core",
  "tauri",
  "tauri-build",
  "tauri-plugin-opener",
+]
+
+[[package]]
+name = "iva-core"
+version = "0.1.0"
+dependencies = [
+ "ab_glyph",
+ "image",
+ "imageproc",
+ "serde",
+ "serde_json",
+ "tsify-next",
+ "wasm-bindgen",
+]
+
+[[package]]
+name = "iva-wasm"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "console_error_panic_hook",
+ "iva-core",
+ "serde",
+ "serde-wasm-bindgen",
+ "serde_json",
+ "tsify-next",
+ "wasm-bindgen",
+ "wasm-bindgen-test",
+ "web-sys",
 ]
 
 [[package]]
@@ -4109,35 +4138,6 @@ dependencies = [
  "gobject-sys",
  "libc",
  "system-deps",
-]
-
-[[package]]
-name = "src-core"
-version = "0.1.0"
-dependencies = [
- "ab_glyph",
- "image",
- "imageproc",
- "serde",
- "serde_json",
- "tsify-next",
- "wasm-bindgen",
-]
-
-[[package]]
-name = "src-wasm"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "console_error_panic_hook",
- "serde",
- "serde-wasm-bindgen",
- "serde_json",
- "src-core",
- "tsify-next",
- "wasm-bindgen",
- "wasm-bindgen-test",
- "web-sys",
 ]
 
 [[package]]

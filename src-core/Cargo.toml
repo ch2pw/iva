@@ -1,13 +1,14 @@
 [package]
+description = "The tauri part of the Iva editor"
 edition = "2024"
-name = "src-core"
+name = "iva-core"
 version = "0.1.0"
 
 [dependencies]
 ab_glyph = "0.2.29"
 image = "0.25.5"
 imageproc = "0.25.0"
-serde = {version="1.0.218", features=["derive"]}
+serde = {version = "1.0.218", features = ["derive"]}
 serde_json = "1.0.139"
 tsify-next = "0.5.5"
 wasm-bindgen = "0.2.100"
