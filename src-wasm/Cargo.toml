@@ -10,13 +10,6 @@ version = "0.1.0"
 [lib]
 crate-type = ["cdylib"]
 
-[profile.release]
-lto = true
-opt-level = "s"
-
-[profile.dev]
-debug-assertions = true
-
 [dependencies]
 anyhow = "1.0.96"
 console_error_panic_hook = "0.1.7"
