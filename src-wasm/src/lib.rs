@@ -47,9 +47,9 @@ fn render_rect(img: &mut ImageBuffer<Rgba, Vec<u8>>, item: &Item) {
     let width = item.props["width"].as_f64().unwrap() as u32;
     let height = item.props["height"].as_f64().unwrap() as u32;
     let color = item.props["color"].as_str().unwrap();
-    let color = parse_color(&color);
+    let color = parse_color(color);
 
-    if width <= 0 || height <= 0 {
+    if width == 0 || height == 0 {
         return;
     }
 
@@ -68,7 +68,7 @@ fn render_circle(img: &mut ImageBuffer<Rgba, Vec<u8>>, item: &Item) {
     let y = item.props["y"].as_f64().unwrap() as u32;
     let radius = item.props["radius"].as_f64().unwrap() as u32;
     let color = item.props["color"].as_str().unwrap();
-    let color = parse_color(&color);
+    let color = parse_color(color);
 
     // draw_filled_circle_mut(img, (x, y), radius, color);
     map_enumerated_pixels_mut_parallel(img, |px, py, pixel| {
@@ -88,7 +88,7 @@ fn render_text(img: &mut ImageBuffer<Rgba, Vec<u8>>, item: &Item) {
     let text = item.props["text"].as_str().unwrap();
     let font_size = item.props["fontSize"].as_f64().unwrap() as f32;
     let color = item.props["color"].as_str().unwrap();
-    let color = parse_color(&color);
+    let color = parse_color(color);
 
     let mut font = FontRef::try_from_slice(include_bytes!("../../src/assets/fonts/notosansjp.ttf"))
         .expect("Failed to load font.");
@@ -133,6 +133,6 @@ pub fn render(layers: JsValue, time: u64) {
         .dyn_into::<CanvasRenderingContext2d>()
         .unwrap();
     let data = img.as_raw();
-    let image_data = ImageData::new_with_u8_clamped_array(Clamped(&data), SCREEN_WIDTH).unwrap();
+    let image_data = ImageData::new_with_u8_clamped_array(Clamped(data), SCREEN_WIDTH).unwrap();
     context.put_image_data(&image_data, 0.0, 0.0).unwrap();
 }
