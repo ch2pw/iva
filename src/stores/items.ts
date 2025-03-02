@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { Item } from "../types";
 
 export const useItemsStore = defineStore("items", () => {
@@ -24,13 +24,28 @@ export const useItemsStore = defineStore("items", () => {
       id: "2aea6df4-9bdc-4b7b-b795-96c1346a37ab",
       layer: 2,
       name: "Item 2",
-      time: { start: 100, end: 300 },
+      time: { start: 0, end: 300 },
       filters: [],
       kind: "circle",
       props: {
         x: 200,
         y: 200,
         radius: 50,
+        color: "#4e7682",
+      },
+    },
+    "3aea6df4-9bdc-4b7b-b795-96c1346a37ab": {
+      id: "3aea6df4-9bdc-4b7b-b795-96c1346a37ab",
+      layer: 3,
+      name: "Item 3",
+      time: { start: 0, end: 400 },
+      filters: [],
+      kind: "text",
+      props: {
+        x: 100,
+        y: 100,
+        fontSize: 16,
+        text: "Text",
         color: "#4e7682",
       },
     },
@@ -71,10 +86,6 @@ export const useItemsStore = defineStore("items", () => {
   function remove(id: string): void {
     delete source.value[id];
   }
-
-  watch(source, (v) => {
-    console.log("items", v);
-  }, { deep: true });
 
   return {
     source,

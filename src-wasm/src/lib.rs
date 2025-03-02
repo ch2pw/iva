@@ -1,11 +1,11 @@
 use std::collections::HashMap;
 
-use image::{EncodableLayout, ImageBuffer, imageops::overlay};
+use ab_glyph::{FontRef, VariableFont};
+use image::ImageBuffer;
 use imageproc::{
-    drawing::{draw_filled_circle_mut, draw_filled_rect_mut},
+    drawing::{draw_filled_circle_mut, draw_filled_rect_mut, draw_text_mut},
     rect::Rect,
 };
-use itertools::Itertools;
 use types::Item;
 use wasm_bindgen::{Clamped, prelude::*};
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement, ImageData, window};
@@ -21,7 +21,7 @@ type Rgba = image::Rgba<u8>;
 pub fn main_js() -> Result<(), JsValue> {
     console_error_panic_hook::set_once();
 
-    let window = web_sys::window().unwrap();
+    let window = window().unwrap();
     let document = window.document().unwrap();
     let canvas = document
         .get_element_by_id("screen")
@@ -45,16 +45,14 @@ fn parse_color(color: &str) -> Rgba {
 }
 
 fn render_rect(img: &mut ImageBuffer<Rgba, Vec<u8>>, item: &Item) {
-    let x = item.props["x"].as_f64().unwrap() as i64;
-    let y = item.props["y"].as_f64().unwrap() as i64;
+    let x = item.props["x"].as_f64().unwrap() as i32;
+    let y = item.props["y"].as_f64().unwrap() as i32;
     let width = item.props["width"].as_f64().unwrap() as u32;
     let height = item.props["height"].as_f64().unwrap() as u32;
     let color = item.props["color"].as_str().unwrap();
     let color = parse_color(&color);
 
-    let mut rect: ImageBuffer<_, Vec<u8>> = ImageBuffer::new(width, height);
-    draw_filled_rect_mut(&mut rect, Rect::at(0, 0).of_size(width, height), color);
-    overlay(img, &rect, x, y);
+    draw_filled_rect_mut(img, Rect::at(x, y).of_size(width, height), color);
 }
 
 fn render_circle(img: &mut ImageBuffer<Rgba, Vec<u8>>, item: &Item) {
@@ -64,32 +62,43 @@ fn render_circle(img: &mut ImageBuffer<Rgba, Vec<u8>>, item: &Item) {
     let color = item.props["color"].as_str().unwrap();
     let color = parse_color(&color);
 
-    let mut circle: ImageBuffer<_, Vec<u8>> =
-        ImageBuffer::new(radius as u32 * 2, radius as u32 * 2);
-    draw_filled_circle_mut(&mut circle, (radius, radius), radius, color);
-    overlay(img, &circle, (x - radius).into(), (y - radius).into());
+    draw_filled_circle_mut(img, (x, y), radius, color);
+}
+
+fn render_text(img: &mut ImageBuffer<Rgba, Vec<u8>>, item: &Item) {
+    let x = item.props["x"].as_f64().unwrap() as i32;
+    let y = item.props["y"].as_f64().unwrap() as i32;
+    let text = item.props["text"].as_str().unwrap();
+    let font_size = item.props["fontSize"].as_f64().unwrap() as f32;
+    let color = item.props["color"].as_str().unwrap();
+    let color = parse_color(&color);
+
+    let mut font = FontRef::try_from_slice(include_bytes!("../../src/assets/fonts/notosansjp.ttf"))
+        .expect("Failed to load font.");
+    font.set_variation(b"wght", 600.0);
+    draw_text_mut(img, color, x, y, font_size * 5.0, &font, text);
 }
 
 #[wasm_bindgen]
-pub async fn render(items: JsValue, time: u64) {
-    let items = serde_wasm_bindgen::from_value::<HashMap<String, Item>>(items).unwrap();
-    let items = items
-        .values()
-        .filter(|item| item.time.contains(time))
-        .sorted_by_key(|item| item.layer)
-        .collect::<Vec<_>>();
+pub fn render(layers: JsValue, time: u64) {
+    let layers = serde_wasm_bindgen::from_value::<HashMap<String, Vec<Item>>>(layers).unwrap();
 
     let mut img = ImageBuffer::from_pixel(SCREEN_WIDTH, SCREEN_HEIGHT, Rgba::from([0, 0, 0, 255]));
 
-    for item in items {
-        match item.kind.as_str() {
-            "rect" => render_rect(&mut img, item),
-            "circle" => render_circle(&mut img, item),
-            "text" => {}
-            "image" => {}
-            "video" => {}
-            "audio" => {}
-            _ => {}
+    for layer in (1..=50).map(|i| i.to_string()) {
+        let item = layers
+            .get(&layer)
+            .and_then(|items| items.iter().find(|item| item.time.contains(time)));
+        if let Some(item) = item {
+            match item.kind.as_str() {
+                "rect" => render_rect(&mut img, item),
+                "circle" => render_circle(&mut img, item),
+                "text" => render_text(&mut img, item),
+                "image" => {}
+                "video" => {}
+                "audio" => {}
+                _ => {}
+            }
         }
     }
 
@@ -106,7 +115,7 @@ pub async fn render(items: JsValue, time: u64) {
         .unwrap()
         .dyn_into::<CanvasRenderingContext2d>()
         .unwrap();
-    let data = img.as_bytes();
+    let data = img.as_raw();
     let image_data = ImageData::new_with_u8_clamped_array(Clamped(&data), SCREEN_WIDTH).unwrap();
     context.put_image_data(&image_data, 0.0, 0.0).unwrap();
 }

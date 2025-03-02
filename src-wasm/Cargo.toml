@@ -18,6 +18,7 @@ opt-level = "s"
 debug-assertions = true
 
 [dependencies]
+ab_glyph = "0.2.29"
 anyhow = "1.0.96"
 cgmath = "0.18.0"
 console_error_panic_hook = "0.1.7"

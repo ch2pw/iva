@@ -1165,6 +1165,7 @@ checksum = "7fcf8323ef1faaee30a44a340193b1ac6814fd9b7b4e88e9d4519a3e4abe1cfd"
 name = "src-wasm"
 version = "0.1.0"
 dependencies = [
+ "ab_glyph",
  "anyhow",
  "cgmath",
  "console_error_panic_hook",
