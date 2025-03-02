@@ -10,7 +10,7 @@ Work in progress...
 ## Development
 ```sh
 cd src-wasm
-wasm-pack build --target web
+wasm-pack build --target web --dev
 cd ..
 
 pnpm tauri dev
