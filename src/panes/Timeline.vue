@@ -11,7 +11,7 @@ const timeStore = useTimeStore();
 
 function outSideClick(event: MouseEvent) {
   const elementX = (event.currentTarget as HTMLElement).getBoundingClientRect().left;
-  timeStore.time = (event.clientX - elementX) / zoom.value;
+  timeStore.time = Math.round((event.clientX - elementX) / zoom.value);
   if (itemsStore.selectedItem && !contains(itemsStore.selectedItem.time, timeStore.time)) {
     itemsStore.selectedItem = null;
   }

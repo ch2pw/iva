@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { watch } from 'vue';
-import init, { render } from '../../src-wasm/pkg/src_wasm';
+import init, { render } from '../../src-wasm/pkg';
 import { useItemsStore } from '../stores/items';
 import { useTimeStore } from '../stores/time';
 import { IconPlayerPauseFilled, IconPlayerPlayFilled } from '@tabler/icons-vue';
@@ -10,7 +10,7 @@ const timeStore = useTimeStore();
 init().then(() => render(itemsStore.layers, BigInt(timeStore.time)));
 
 watch([() => itemsStore.layers, () => timeStore.time], (v) => {
-  render(v[0], BigInt(Math.round(v[1])));
+  render(v[0], BigInt(v[1]));
 }, { deep: true });
 </script>
 

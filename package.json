@@ -10,7 +10,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "wasm:dev": "cd src-wasm && cargo watch -w src/*.rs -s 'wasm-pack build --target web --dev' & cd ..",
+    "wasm:dev": "cd src-wasm && watchexec -e rs -- wasm-pack build --target web --dev & cd ..",
     "wasm:build": "cd src-wasm && wasm-pack build --target web --release && cd ..",
     "dev": "pnpm wasm:dev & vite",
     "build": "pnpm wasm:build && vue-tsc --noEmit && vite build",
