@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  ファイルマネージャー
+  曲線エディター
 </template>
 
 <style module>

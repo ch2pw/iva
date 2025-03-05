@@ -5,6 +5,10 @@ import Props from './panes/Props.vue';
 import Screen from './panes/Screen.vue';
 import FileManager from './panes/FileManager.vue';
 import Timeline from './panes/Timeline.vue';
+import CurveEditor from './panes/CurveEditor.vue';
+import { useItemsStore } from './stores/items';
+
+const itemsStore = useItemsStore();
 </script>
 
 <template>
@@ -26,8 +30,18 @@ import Timeline from './panes/Timeline.vue';
         </SplitterGroup>
       </SplitterPanel>
       <SplitterResizeHandle :class="$style.handleV" />
-      <SplitterPanel :class="$style.pane" :as="Panel" :default-size="40">
-        <Timeline />
+      <SplitterPanel :default-size="40">
+        <SplitterGroup direction="horizontal">
+          <SplitterPanel :class="$style.pane" :as="Panel">
+            <Timeline />
+          </SplitterPanel>
+          <template v-if="itemsStore.selectedItem">
+            <SplitterResizeHandle :class="$style.handleH" />
+            <SplitterPanel :class="$style.pane" :as="Panel" :default-size="30">
+              <CurveEditor />
+            </SplitterPanel>
+          </template>
+        </SplitterGroup>
       </SplitterPanel>
     </SplitterGroup>
   </main>
@@ -42,7 +56,8 @@ import Timeline from './panes/Timeline.vue';
 }
 
 .pane {
-  overflow: auto !important; /* disable `overflow: hidden` by reka-ui */
+  overflow: auto !important;
+  /* disable `overflow: hidden` by reka-ui */
   border: solid 1px var(--divider);
   position: relative;
 }

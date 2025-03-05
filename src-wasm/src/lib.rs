@@ -4,12 +4,11 @@ use iva_core::types::Item;
 use wasm_bindgen::{Clamped, prelude::*};
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement, ImageData, window};
 
-const SCREEN_WIDTH: u32 = 1980;
+const SCREEN_WIDTH: u32 = 1920;
 const SCREEN_HEIGHT: u32 = 1080;
 
 #[wasm_bindgen(start)]
-pub fn main_js() -> Result<(), JsValue> {
-    #[cfg(debug_assertions)]
+pub fn startup() -> Result<(), JsValue> {
     console_error_panic_hook::set_once();
 
     let window = window().unwrap();
@@ -53,6 +52,6 @@ pub fn render(layers: JsValue, time: u64) {
     let img = iva_core::render(&layers, time);
 
     let data = img.as_raw();
-    let image_data = ImageData::new_with_u8_clamped_array(Clamped(data), SCREEN_WIDTH).unwrap();
+    let image_data = ImageData::new_with_u8_clamped_array_and_sh(Clamped(data), SCREEN_WIDTH, SCREEN_HEIGHT).unwrap();
     context().put_image_data(&image_data, 0.0, 0.0).unwrap();
 }

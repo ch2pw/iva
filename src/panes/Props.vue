@@ -24,8 +24,21 @@ const propsDefinition = computed(() => itemsStore.selectedItem ? itemMeta[itemsS
 
         <NumberField v-if="definition.type === 'number'" v-model="itemsStore.selectedItem.props[prop]" />
 
+        <template v-else-if="definition.type === 'animatable-number'">
+          <NumberField v-for="i in itemsStore.selectedItem.props[prop].length" :key="i"
+            v-model="itemsStore.selectedItem.props[prop][i - 1]" />
+          <button :class="$style.button" @click="itemsStore.selectedItem.props[prop].push(0)">制御点を追加</button>
+        </template>
+
         <Slider v-else-if="definition.type === 'slider'" v-model="itemsStore.selectedItem.props[prop]"
           :min="definition.min" :max="definition.max" :step="definition.step" :default-value="definition.default" />
+
+        <template v-else-if="definition.type === 'animatable-slider'">
+          <Slider v-for="i in itemsStore.selectedItem.props[prop].length" :key="i"
+            v-model="itemsStore.selectedItem.props[prop][i - 1]" :min="definition.min" :max="definition.max"
+            :step="definition.step" :default-value="definition.default?.[i - 1]" />
+          <button :class="$style.button" @click="itemsStore.selectedItem.props[prop].push(0)">制御点を追加</button>
+        </template>
 
         <TextField v-else-if="definition.type === 'text'" v-model="itemsStore.selectedItem.props[prop]"
           :multiline="definition.multiline" />
@@ -64,5 +77,16 @@ const propsDefinition = computed(() => itemsStore.selectedItem ? itemMeta[itemsS
 .color {
   width: 100%;
   height: 30px;
+}
+
+.button {
+  border-radius: 5px;
+  padding: 5px;
+  text-align: center;
+  background-color: var(--button);
+}
+
+.button:hover {
+  background-color: var(--button-hover);
 }
 </style>

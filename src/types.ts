@@ -27,13 +27,29 @@ export type PropDefinition = (
     max: number,
     step?: number,
   } | {
+    type: "animatable-slider",
+    default?: number[],
+    min: number,
+    max: number,
+    step?: number,
+  } | {
     type: "number",
     default?: number,
     min?: number,
     max?: number,
     step?: number,
   } | {
+    type: "animatable-number",
+    default?: number[],
+    min?: number,
+    max?: number,
+    step?: number,
+  } | {
     type: "color",
+    default?: string,
+  } | {
+    type: "animatable-color",
+    default?: string[],
   } | {
     type: "text",
     multiline?: boolean,

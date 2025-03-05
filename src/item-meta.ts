@@ -7,25 +7,25 @@ export const itemMeta = {
     propsDefinition: {
       x: {
         label: "X",
-        type: "number",
-        default: 0,
+        type: "animatable-number",
+        default: [0],
       },
       y: {
         label: "Y",
-        type: "number",
-        default: 0,
+        type: "animatable-number",
+        default: [0],
       },
       width: {
         label: "幅",
-        type: "slider",
-        default: 100,
+        type: "animatable-slider",
+        default: [100],
         min: 0,
         max: 1000,
       },
       height: {
         label: "高さ",
-        type: "slider",
-        default: 100,
+        type: "animatable-slider",
+        default: [100],
         min: 0,
         max: 1000,
       },
