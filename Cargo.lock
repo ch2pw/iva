@@ -2078,7 +2078,6 @@ dependencies = [
  "ab_glyph",
  "image",
  "imageproc",
- "num-traits",
  "serde",
  "serde_json",
  "tsify-next",

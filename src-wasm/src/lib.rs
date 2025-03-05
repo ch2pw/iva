@@ -31,13 +31,12 @@ fn context() -> CanvasRenderingContext2d {
         .unwrap()
         .dyn_into::<HtmlCanvasElement>()
         .unwrap();
-    let context = canvas
+    canvas
         .get_context("2d")
         .unwrap()
         .unwrap()
         .dyn_into::<CanvasRenderingContext2d>()
-        .unwrap();
-    context
+        .unwrap()
 }
 
 #[wasm_bindgen]

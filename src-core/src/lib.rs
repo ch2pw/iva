@@ -1,7 +1,4 @@
-use std::{
-    collections::HashMap,
-    ops::{Add, Mul},
-};
+use std::collections::HashMap;
 
 use ab_glyph::{FontRef, VariableFont};
 use image::ImageBuffer;
@@ -9,7 +6,6 @@ use imageproc::{
     drawing::{draw_filled_circle_mut, draw_filled_rect_mut, draw_text_mut},
     rect::Rect,
 };
-use num_traits::{Num, NumCast};
 
 pub mod types;
 
