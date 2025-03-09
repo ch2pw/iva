@@ -2,15 +2,20 @@
 import { IconMinus, IconPlus } from '@tabler/icons-vue';
 import { NumberFieldDecrement, NumberFieldIncrement, NumberFieldInput, NumberFieldRoot } from 'reka-ui';
 
+withDefaults(defineProps<{
+  buttons?: boolean;
+}>(), {
+  buttons: true,
+});
 </script>
 
 <template>
   <NumberFieldRoot :class="$style.numberFieldRoot">
-    <NumberFieldDecrement :class="$style.numberFieldDecrement">
+    <NumberFieldDecrement :class="$style.numberFieldDecrement" v-if="buttons">
       <IconMinus :size="13" />
     </NumberFieldDecrement>
     <NumberFieldInput :class="$style.numberFieldInput" />
-    <NumberFieldIncrement :class="$style.numberFieldIncrement">
+    <NumberFieldIncrement :class="$style.numberFieldIncrement" v-if="buttons">
       <IconPlus :size="13" />
     </NumberFieldIncrement>
   </NumberFieldRoot>
@@ -22,6 +27,7 @@ import { NumberFieldDecrement, NumberFieldIncrement, NumberFieldInput, NumberFie
   align-items: stretch;
   gap: 5px;
   width: 100%;
+  min-width: 0;
 }
 
 .numberFieldInput {

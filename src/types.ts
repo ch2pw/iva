@@ -22,48 +22,81 @@ export type Item = {
 export type PropDefinition = (
   {
     type: "slider",
-    default?: number,
+    animatable: false,
+    default: number,
     min: number,
     max: number,
     step?: number,
   } | {
-    type: "animatable-slider",
-    default?: number[],
+    type: "slider",
+    animatable: true,
+    default: {
+      progress: number,
+      value: number,
+    }[],
+    newDefault: number,
     min: number,
     max: number,
     step?: number,
   } | {
     type: "number",
-    default?: number,
+    animatable: false,
+    default: number,
     min?: number,
     max?: number,
     step?: number,
   } | {
-    type: "animatable-number",
-    default?: number[],
+    type: "number",
+    animatable: true,
+    default: {
+      progress: number,
+      value: number,
+    }[],
+    newDefault: number,
     min?: number,
     max?: number,
     step?: number,
   } | {
     type: "color",
-    default?: string,
+    animatable: false,
+    default: string,
   } | {
-    type: "animatable-color",
-    default?: string[],
+    type: "color",
+    animatable: true,
+    default: {
+      progress: number,
+      value: string,
+    }[],
+    newDefault: number,
   } | {
     type: "text",
+    animatable: false,
+    default: string,
     multiline?: boolean,
-    default?: string,
   } | {
     type: "select",
+    animatable: false,
+    default: string,
     options: {
       value: string,
       label: string,
     }[],
-    default?: string,
+  } | {
+    type: "select",
+    animatable: true,
+    default: {
+      progress: number,
+      value: string,
+    }[],
+    newDefault: string,
+    options: {
+      value: string,
+      label: string,
+    }[],
   } | {
     type: "file",
-    default?: string,
+    animatable: false,
+    default: string,
   }
 ) & {
   label: string,

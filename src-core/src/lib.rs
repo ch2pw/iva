@@ -33,27 +33,44 @@ fn parse_color(color: &str) -> Rgba {
     Rgba::from([r, g, b, a])
 }
 
-fn interpolate(points: &[f64], progress: f64) -> f64 {
-    let len = points.len();
-    if len == 0 {
-        panic!("No points to interpolate");
+fn interpolate(points: &[ControlPoint], progress: f64) -> f64 {
+    if points.len() == 1 {
+        return points[0].value;
     }
-    if len == 1 {
-        return points[0];
+
+    let prev = points.iter().rev().find(|point| point.progress <= progress);
+    let next = points.iter().find(|point| point.progress >= progress);
+    match (prev, next) {
+        (Some(prev), Some(next)) => {
+            let progress = (progress - prev.progress) / (next.progress - prev.progress);
+            prev.value + (next.value - prev.value) * progress
+        }
+        (Some(prev), None) => prev.value,
+        (None, Some(next)) => next.value,
+        (None, None) => panic!("No control points"),
     }
-    let step = 1.0 / (len as f64 - 1.0);
-    let index = (progress / step).floor() as usize;
-    let progress = progress % step;
-    let start = points[index];
-    let end = points[index + 1];
-    start + (end - start) * progress / step
+}
+
+pub struct ControlPoint {
+    pub progress: f64,
+    pub value: f64,
+}
+
+impl TryFrom<&serde_json::Value> for ControlPoint {
+    type Error = &'static str;
+
+    fn try_from(value: &serde_json::Value) -> Result<Self, Self::Error> {
+        let progress = value["progress"].as_f64().ok_or("progress is not a number")?;
+        let value = value["value"].as_f64().ok_or("value is not a number")?;
+        Ok(ControlPoint { progress, value })
+    }
 }
 
 pub struct IvaRect {
-    pub x: Vec<f64>,
-    pub y: Vec<f64>,
-    pub width: Vec<f64>,
-    pub height: Vec<f64>,
+    pub x: Vec<ControlPoint>,
+    pub y: Vec<ControlPoint>,
+    pub width: Vec<ControlPoint>,
+    pub height: Vec<ControlPoint>,
     pub color: Rgba,
 }
 
@@ -63,25 +80,25 @@ impl From<&types::Item> for IvaRect {
             .as_array()
             .unwrap()
             .iter()
-            .map(|x| x.as_f64().unwrap())
+            .map(|x| x.try_into().unwrap())
             .collect();
         let y = item.props["y"]
             .as_array()
             .unwrap()
             .iter()
-            .map(|y| y.as_f64().unwrap())
+            .map(|y| y.try_into().unwrap())
             .collect();
         let width = item.props["width"]
             .as_array()
             .unwrap()
             .iter()
-            .map(|w| w.as_f64().unwrap())
+            .map(|w| w.try_into().unwrap())
             .collect();
         let height = item.props["height"]
             .as_array()
             .unwrap()
             .iter()
-            .map(|h| h.as_f64().unwrap())
+            .map(|h| h.try_into().unwrap())
             .collect();
         let color = item.props["color"].as_str().unwrap();
         let color = parse_color(color);

@@ -12,10 +12,22 @@ export const useItemsStore = defineStore("items", () => {
       filters: [],
       kind: "rect",
       props: {
-        x: [0],
-        y: [0],
-        width: [100],
-        height: [100],
+        x: [{
+          progress: 0,
+          value: 0,
+        }],
+        y: [{
+          progress: 0,
+          value: 0,
+        }],
+        width: [{
+          progress: 0,
+          value: 100,
+        }],
+        height: [{
+          progress: 0,
+          value: 100,
+        }],
         align: "center",
         color: "#4e7682",
       },

@@ -3,16 +3,14 @@ import { SliderRoot, SliderTrack, SliderRange, SliderThumb, TooltipContent, Tool
 
 defineOptions({
   inheritAttrs: false,
-})
-const props = defineProps<{ defaultValue?: number }>();
+});
 const model = defineModel<number>();
-if (!model.value) model.value = props.defaultValue ?? 0;
 </script>
 
 <template>
   <TooltipProvider :delay-duration="0">
     <SliderRoot :class="$style.sliderRoot" v-bind="$attrs" :model-value="[model!]"
-      @update:model-value="model = $event![0]">
+      @update:model-value="model = $event![0]" :default-value="[model!]">
       <SliderTrack :class="$style.sliderTrack">
         <SliderRange :class="$style.sliderRange"></SliderRange>
       </SliderTrack>

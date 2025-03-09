@@ -7,31 +7,52 @@ export const itemMeta = {
     propsDefinition: {
       x: {
         label: "X",
-        type: "animatable-number",
-        default: [0],
+        type: "number",
+        animatable: true,
+        default: [{
+          progress: 0,
+          value: 0,
+        }],
+        newDefault: 0,
       },
       y: {
         label: "Y",
-        type: "animatable-number",
-        default: [0],
+        type: "number",
+        animatable: true,
+        default: [{
+          progress: 0,
+          value: 0,
+        }],
+        newDefault: 0,
       },
       width: {
         label: "幅",
-        type: "animatable-slider",
-        default: [100],
+        type: "slider",
+        animatable: true,
+        default: [{
+          progress: 0,
+          value: 100,
+        }],
+        newDefault: 100,
         min: 0,
         max: 1000,
       },
       height: {
         label: "高さ",
-        type: "animatable-slider",
-        default: [100],
+        type: "slider",
+        animatable: true,
+        default: [{
+          progress: 0,
+          value: 100,
+        }],
+        newDefault: 100,
         min: 0,
         max: 1000,
       },
       align: {
         label: "原点",
         type: "select",
+        animatable: false,
         default: "left",
         options: [{
           value: "left-top",
@@ -65,6 +86,7 @@ export const itemMeta = {
       color: {
         label: "色",
         type: "color",
+        animatable: false,
         default: "#000",
       },
     },
@@ -76,16 +98,19 @@ export const itemMeta = {
       x: {
         label: "X",
         type: "number",
+        animatable: false,
         default: 0,
       },
       y: {
         label: "Y",
         type: "number",
+        animatable: false,
         default: 0,
       },
       radius: {
         label: "半径",
         type: "slider",
+        animatable: false,
         default: 50,
         min: 0,
         max: 500,
@@ -93,6 +118,7 @@ export const itemMeta = {
       color: {
         label: "色",
         type: "color",
+        animatable: false,
         default: "#000",
       },
     },
@@ -104,22 +130,26 @@ export const itemMeta = {
       x: {
         label: "X",
         type: "number",
+        animatable: false,
         default: 0,
       },
       y: {
         label: "Y",
         type: "number",
+        animatable: false,
         default: 0,
       },
       text: {
         label: "文章",
         type: "text",
+        animatable: false,
         multiline: true,
         default: "Hello",
       },
       fontSize: {
         label: "フォントサイズ",
         type: "slider",
+        animatable: false,
         default: 16,
         min: 0,
         max: 100,
@@ -127,6 +157,7 @@ export const itemMeta = {
       color: {
         label: "色",
         type: "color",
+        animatable: false,
         default: "#000",
       },
     },
@@ -138,16 +169,19 @@ export const itemMeta = {
       x: {
         label: "X",
         type: "number",
+        animatable: false,
         default: 0,
       },
       y: {
         label: "Y",
         type: "number",
+        animatable: false,
         default: 0,
       },
       width: {
         label: "幅",
         type: "slider",
+        animatable: false,
         default: 100,
         min: 0,
         max: 1000,
@@ -155,6 +189,7 @@ export const itemMeta = {
       height: {
         label: "高さ",
         type: "slider",
+        animatable: false,
         default: 100,
         min: 0,
         max: 1000,
@@ -162,6 +197,8 @@ export const itemMeta = {
       src: {
         label: "ファイル",
         type: "file",
+        animatable: false,
+        default: "",
       },
     },
   },
@@ -172,6 +209,8 @@ export const itemMeta = {
       src: {
         label: "ファイル",
         type: "file",
+        animatable: false,
+        default: "",
       },
     },
   },
