@@ -21,6 +21,7 @@
     "@internationalized/number": "3.6.0",
     "@tabler/icons-vue": "3.30.0",
     "@tauri-apps/api": "2.3.0",
+    "@tauri-apps/plugin-dialog": "~2",
     "@tauri-apps/plugin-opener": "2.2.6",
     "@types/throttle-debounce": "5.0.2",
     "pinia": "3.0.1",

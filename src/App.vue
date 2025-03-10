@@ -7,8 +7,42 @@ import FileManager from './panes/FileManager.vue';
 import Timeline from './panes/Timeline.vue';
 import CurveEditor from './panes/CurveEditor.vue';
 import { useItemsStore } from './stores/items';
+import { Menu } from '@tauri-apps/api/menu';
+import { onMounted } from 'vue';
 
 const itemsStore = useItemsStore();
+
+onMounted(async () => {
+  const menu = await Menu.new({
+    items: [
+      {
+        id: 'file',
+        text: 'ファイル',
+        items: [
+          {
+            text: 'エクスポート',
+            items: [
+              {
+                id: 'export-mp4',
+                text: 'MP4エクスポート',
+              },
+              {
+                id: 'export-gif',
+                text: "GIFエクスポート",
+              },
+              {
+                id: 'export-png',
+                text: '現在のフレームをPNGエクスポート',
+              },
+            ],
+          }
+        ],
+      }
+    ],
+  });
+
+  await menu.setAsAppMenu();
+})
 </script>
 
 <template>
