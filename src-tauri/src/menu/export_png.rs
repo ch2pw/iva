@@ -1,1 +1,1 @@
-pub fn export_png(_app: &tauri::AppHandle) {}
+pub fn export_png(_app: tauri::AppHandle) {}

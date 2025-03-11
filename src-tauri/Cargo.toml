@@ -17,6 +17,7 @@ name = "iva_lib"
 tauri-build = {version = "2.0.6", features = [] }
 
 [dependencies]
+image = "0.25.5"
 iva-core = {path = "../src-core"}
 ndarray = "0.16.1"
 serde = {version = "1.0.218", features = ["derive"] }

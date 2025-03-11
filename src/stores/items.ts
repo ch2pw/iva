@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { Item } from "../types";
+import { invoke } from "@tauri-apps/api/core";
 
 export const useItemsStore = defineStore("items", () => {
   const source = ref({
@@ -86,6 +87,11 @@ export const useItemsStore = defineStore("items", () => {
     get: () => selected.value ? items.value[selected.value] : null,
     set: (item: Item | null) => selected.value = item?.id ?? null,
   });
+
+  invoke("update_layers", { layers: layers.value });
+  watch(layers, (layers) => {
+    invoke("update_layers", { layers });
+  }, { deep: true });
 
   function update(item: Item): void {
     source.value[item.id] = item;

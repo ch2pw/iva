@@ -10,7 +10,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "wasm:dev": "cd src-wasm && watchexec -e rs -- wasm-pack build --target web & cd ..",
+    "wasm:dev": "watchexec -w src-wasm -w src-core -e rs 'cd src-wasm && wasm-pack build --target web'",
     "wasm:build": "cd src-wasm && wasm-pack build --target web && cd ..",
     "dev": "pnpm wasm:dev & vite",
     "build": "pnpm wasm:build && vue-tsc --noEmit && vite build",

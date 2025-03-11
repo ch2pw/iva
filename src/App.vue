@@ -42,7 +42,7 @@ onMounted(async () => {
   });
 
   await menu.setAsAppMenu();
-})
+});
 </script>
 
 <template>

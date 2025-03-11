@@ -60,7 +60,9 @@ impl TryFrom<&serde_json::Value> for ControlPoint {
     type Error = &'static str;
 
     fn try_from(value: &serde_json::Value) -> Result<Self, Self::Error> {
-        let progress = value["progress"].as_f64().ok_or("progress is not a number")?;
+        let progress = value["progress"]
+            .as_f64()
+            .ok_or("progress is not a number")?;
         let value = value["value"].as_f64().ok_or("value is not a number")?;
         Ok(ControlPoint { progress, value })
     }
@@ -121,14 +123,18 @@ impl Render for IvaRect {
     ) {
         let progress =
             (time - time_range.start) as f64 / (time_range.end - time_range.start) as f64;
-        let width = interpolate(&self.width, progress);
-        let height = interpolate(&self.height, progress);
-        let x = interpolate(&self.x, progress);
-        let y = interpolate(&self.y, progress);
-        if width <= 0.0 || height <= 0.0 {
+        let width = interpolate(&self.width, progress) as _;
+        let height = interpolate(&self.height, progress) as _;
+        let x = interpolate(&self.x, progress) as _;
+        let y = interpolate(&self.y, progress) as _;
+        if width <= 0 || height <= 0 {
             return;
         }
-        draw_filled_rect_mut(img, Rect::at(x as _, y as _).of_size(width as _, height as _), self.color);
+        draw_filled_rect_mut(
+            img,
+            Rect::at(x, y).of_size(width, height),
+            self.color,
+        );
     }
 }
 
