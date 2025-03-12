@@ -76,33 +76,33 @@ pub struct IvaRect {
     pub color: Rgba,
 }
 
-impl From<&types::Item> for IvaRect {
-    fn from(item: &types::Item) -> Self {
-        let x = item.props["x"]
+impl From<&HashMap<String, serde_json::Value>> for IvaRect {
+    fn from(props: &HashMap<String, serde_json::Value>) -> Self {
+        let x = props["x"]
             .as_array()
             .unwrap()
             .iter()
             .map(|x| x.try_into().unwrap())
             .collect();
-        let y = item.props["y"]
+        let y = props["y"]
             .as_array()
             .unwrap()
             .iter()
             .map(|y| y.try_into().unwrap())
             .collect();
-        let width = item.props["width"]
+        let width = props["width"]
             .as_array()
             .unwrap()
             .iter()
             .map(|w| w.try_into().unwrap())
             .collect();
-        let height = item.props["height"]
+        let height = props["height"]
             .as_array()
             .unwrap()
             .iter()
             .map(|h| h.try_into().unwrap())
             .collect();
-        let color = item.props["color"].as_str().unwrap();
+        let color = props["color"].as_str().unwrap();
         let color = parse_color(color);
         IvaRect {
             x,
@@ -130,11 +130,7 @@ impl Render for IvaRect {
         if width <= 0 || height <= 0 {
             return;
         }
-        draw_filled_rect_mut(
-            img,
-            Rect::at(x, y).of_size(width, height),
-            self.color,
-        );
+        draw_filled_rect_mut(img, Rect::at(x, y).of_size(width, height), self.color);
     }
 }
 
@@ -145,12 +141,12 @@ pub struct IvaCircle {
     pub color: Rgba,
 }
 
-impl From<&types::Item> for IvaCircle {
-    fn from(item: &types::Item) -> Self {
-        let x = item.props["x"].as_f64().unwrap() as _;
-        let y = item.props["y"].as_f64().unwrap() as _;
-        let radius = item.props["radius"].as_f64().unwrap() as _;
-        let color = item.props["color"].as_str().unwrap();
+impl From<&HashMap<String, serde_json::Value>> for IvaCircle {
+    fn from(props: &HashMap<String, serde_json::Value>) -> Self {
+        let x = props["x"].as_f64().unwrap() as _;
+        let y = props["y"].as_f64().unwrap() as _;
+        let radius = props["radius"].as_f64().unwrap() as _;
+        let color = props["color"].as_str().unwrap();
         let color = parse_color(color);
         IvaCircle {
             x,
@@ -180,13 +176,13 @@ pub struct IvaText {
     pub color: Rgba,
 }
 
-impl From<&types::Item> for IvaText {
-    fn from(item: &types::Item) -> Self {
-        let x = item.props["x"].as_f64().unwrap() as _;
-        let y = item.props["y"].as_f64().unwrap() as _;
-        let text = item.props["text"].as_str().unwrap().to_string();
-        let font_size = item.props["fontSize"].as_f64().unwrap() as _;
-        let color = item.props["color"].as_str().unwrap();
+impl From<&HashMap<String, serde_json::Value>> for IvaText {
+    fn from(props: &HashMap<String, serde_json::Value>) -> Self {
+        let x = props["x"].as_f64().unwrap() as _;
+        let y = props["y"].as_f64().unwrap() as _;
+        let text = props["text"].as_str().unwrap().to_string();
+        let font_size = props["fontSize"].as_f64().unwrap() as _;
+        let color = props["color"].as_str().unwrap();
         let color = parse_color(color);
         IvaText {
             x,
@@ -230,9 +226,9 @@ pub fn render(layers: &HashMap<i32, Vec<types::Item>>, time: u64) -> ImageBuffer
             .and_then(|items| items.iter().find(|item| item.time.contains(time)));
         if let Some(item) = item {
             match item.kind.as_str() {
-                "rect" => IvaRect::from(item).render(&mut img, &item.time, time),
-                "circle" => IvaCircle::from(item).render(&mut img, &item.time, time),
-                "text" => IvaText::from(item).render(&mut img, &item.time, time),
+                "rect" => IvaRect::from(&item.props).render(&mut img, &item.time, time),
+                "circle" => IvaCircle::from(&item.props).render(&mut img, &item.time, time),
+                "text" => IvaText::from(&item.props).render(&mut img, &item.time, time),
                 "image" => {}
                 "video" => {}
                 "audio" => {}
