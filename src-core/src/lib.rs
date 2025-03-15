@@ -38,7 +38,7 @@ fn interpolate(points: &[ControlPoint], progress: f64) -> f64 {
         return points[0].value;
     }
 
-    let prev = points.iter().rev().find(|point| point.progress <= progress);
+    let prev = points.iter().rfind(|point| point.progress < progress);
     let next = points.iter().find(|point| point.progress >= progress);
     match (prev, next) {
         (Some(prev), Some(next)) => {

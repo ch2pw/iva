@@ -4,40 +4,71 @@ import { itemMeta } from '../item-meta';
 import { duration, contains } from '../scripts/timerange-utils';
 import { useItemsStore } from '../stores/items';
 import { useTimeStore } from '../stores/time';
+import { Menu, MenuItem, Submenu } from '@tauri-apps/api/menu';
 
 const itemsStore = useItemsStore();
 const zoom = ref(0.3);
 const timeStore = useTimeStore();
 
-function outSideMousedown(event: MouseEvent) {
+function updateTime(event: MouseEvent) {
   const elementX = (event.currentTarget as HTMLElement).getBoundingClientRect().left;
   timeStore.time = Math.round((event.clientX - elementX) / zoom.value);
+}
+
+function outSideMousedown(event: MouseEvent) {
+  updateTime(event);
   if (itemsStore.selectedItem && !contains(itemsStore.selectedItem.time, timeStore.time)) {
     itemsStore.selectedItem = null;
   }
 }
 
 function outSideMousemove(event: MouseEvent) {
-  if (event.buttons === 1) {
-    const elementX = (event.currentTarget as HTMLElement).getBoundingClientRect().left;
-    timeStore.time = Math.round((event.clientX - elementX) / zoom.value);
-  }
+  if (event.buttons === 1) updateTime(event);
+}
+
+async function contextmenu(_: MouseEvent, layer: number) {
+  const menu = await Menu.new({
+    items: [
+      await Submenu.new({
+        text: "新規アイテム",
+        items: [
+          ...await Promise.all(Object.entries(itemMeta).map(async ([kind, meta]) => {
+            return await MenuItem.new({
+              text: meta.name,
+              action: () => {
+                itemsStore.add({
+                  id: crypto.randomUUID(),
+                  filters: [],
+                  kind: kind,
+                  name: meta.name,
+                  time: { start: timeStore.time, end: timeStore.time + 1000 },
+                  layer: layer,
+                  props: Object.fromEntries(Object.entries(meta.propsDefinition).map(([key, value]) => [key, value.default])),
+                });
+              },
+            });
+          })),
+        ]
+      }),
+    ]
+  });
+  menu.popup();
 }
 </script>
 
 <template>
-  <div :class="$style.container" @mousedown="outSideMousedown" @mousemove="outSideMousemove">
+  <div :class="$style.container" @mousedown.left="outSideMousedown" @mousemove.left="outSideMousemove">
     <div :class="$style.time" :style="{ left: timeStore.time * zoom + 'px' }"></div>
     <div :class="$style.ruler">
       <div v-for="i in 100" :key="i" :class="$style.mark" :style="{ width: 500 * zoom + 'px' }">
         {{ (i - 1) * 500 }}
       </div>
     </div>
-    <div v-for="i in 50" :key="i" :class="$style.layer">
+    <div v-for="i in 50" :key="i" :class="$style.layer" @contextmenu.stop.prevent="contextmenu($event, i)">
       <div v-for="item in itemsStore.layers[i] ?? []" :key="item.id"
         :class="[$style.item, { [$style.selected]: itemsStore.selectedItem === item }]"
         :style="{ left: item.time.start * zoom + 'px', width: duration(item.time) * zoom + 'px', '--color': itemMeta[item.kind].color }"
-        @mousedown.stop="itemsStore.selectedItem = item">
+        @mousedown.stop="itemsStore.selectedItem = item" @contextmenu.stop>
         {{ item.name }}
       </div>
     </div>
