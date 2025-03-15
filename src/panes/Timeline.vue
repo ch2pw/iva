@@ -9,17 +9,24 @@ const itemsStore = useItemsStore();
 const zoom = ref(0.3);
 const timeStore = useTimeStore();
 
-function outSideClick(event: MouseEvent) {
+function outSideMousedown(event: MouseEvent) {
   const elementX = (event.currentTarget as HTMLElement).getBoundingClientRect().left;
   timeStore.time = Math.round((event.clientX - elementX) / zoom.value);
   if (itemsStore.selectedItem && !contains(itemsStore.selectedItem.time, timeStore.time)) {
     itemsStore.selectedItem = null;
   }
 }
+
+function outSideMousemove(event: MouseEvent) {
+  if (event.buttons === 1) {
+    const elementX = (event.currentTarget as HTMLElement).getBoundingClientRect().left;
+    timeStore.time = Math.round((event.clientX - elementX) / zoom.value);
+  }
+}
 </script>
 
 <template>
-  <div :class="$style.container" @click="outSideClick">
+  <div :class="$style.container" @mousedown="outSideMousedown" @mousemove="outSideMousemove">
     <div :class="$style.time" :style="{ left: timeStore.time * zoom + 'px' }"></div>
     <div :class="$style.ruler">
       <div v-for="i in 100" :key="i" :class="$style.mark" :style="{ width: 500 * zoom + 'px' }">
@@ -30,7 +37,7 @@ function outSideClick(event: MouseEvent) {
       <div v-for="item in itemsStore.layers[i] ?? []" :key="item.id"
         :class="[$style.item, { [$style.selected]: itemsStore.selectedItem === item }]"
         :style="{ left: item.time.start * zoom + 'px', width: duration(item.time) * zoom + 'px', '--color': itemMeta[item.kind].color }"
-        @click.stop="itemsStore.selectedItem = item">
+        @mousedown.stop="itemsStore.selectedItem = item">
         {{ item.name }}
       </div>
     </div>
@@ -44,6 +51,9 @@ function outSideClick(event: MouseEvent) {
   flex-direction: column;
   width: fit-content;
   overflow: auto;
+
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .time {
