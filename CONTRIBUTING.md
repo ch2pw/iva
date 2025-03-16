@@ -2,7 +2,19 @@
 
 Thank you for considering contributing to this project! We welcome your contributions even small ones (like fixing typos).
 
-## Prerequisites
+## Issues
+- Please follow the title format:
+  ```
+  type: description
+  ```
+  Types:
+  - `bug`: Bug reports
+  - `feat`: Feature requests
+  - `question`: Questions
+  - `docs`: Documentation requests
+
+## Development
+### Prerequisites
 
 - [Rust, Node.js and Tauri's dependencies](https://v2.tauri.app/ja/start/prerequisites/)
 - [pnpm](https://pnpm.io/installation)
@@ -10,7 +22,7 @@ Thank you for considering contributing to this project! We welcome your contribu
 - [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/)
 - [watchexec](https://github.com/watchexec/watchexec)
 
-## Project structure
+### Project structure
 ```
 .
 ├── src
@@ -34,23 +46,22 @@ graph
 ```
 
 ## Pull requests
-
 - If you want to add a new feature, please create an issue first.
 - Pull requests are squashed and merged, so you may need to create a new branch for each pull request.
 - Please send a pull request to the `main` branch.
 - Please include `\n` at the end of each file. (not required for generated files)
 - Please follow the title format:
   ```
-  type: Description
+  type: description
   ```
-  - Types:
-    - `feat`: New features
-    - `enhance`: Enhancements
-    - `fix`: Bug fixes
-    - `change`: Other breaking changes
-    - `refactor`: Code refactoring
-    - `chore`: Maintenance tasks
-    - `docs`: Documentation changes
+  Types:
+  - `feat`: New features
+  - `enhance`: Enhancements
+  - `fix`: Bug fixes
+  - `change`: Other breaking changes
+  - `refactor`: Code refactoring
+  - `chore`: Maintenance tasks
+  - `docs`: Documentation changes
 - Please follow the branch format:
   ```
   type/description
