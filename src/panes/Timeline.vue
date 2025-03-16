@@ -5,8 +5,10 @@ import { duration, contains } from '../scripts/timerange-utils';
 import { useItemsStore } from '../stores/items';
 import { useTimeStore } from '../stores/time';
 import { Menu, MenuItem, Submenu } from '@tauri-apps/api/menu';
+import { useCursorStore } from '../stores/cursor';
 
 const itemsStore = useItemsStore();
+const cursorStore = useCursorStore();
 const zoom = ref(0.3);
 const timeStore = useTimeStore();
 
@@ -15,15 +17,20 @@ function updateTime(event: MouseEvent) {
   timeStore.time = Math.round((event.clientX - elementX) / zoom.value);
 }
 
+function outSideMousemove(event: MouseEvent) {
+  if (event.buttons === 1) {
+    updateTime(event);
+    cursorStore.state = 'ew-resize';
+  } else {
+    cursorStore.state = undefined;
+  }
+}
+
 function outSideMousedown(event: MouseEvent) {
   updateTime(event);
   if (itemsStore.selectedItem && !contains(itemsStore.selectedItem.time, timeStore.time)) {
     itemsStore.selectedItem = null;
   }
-}
-
-function outSideMousemove(event: MouseEvent) {
-  if (event.buttons === 1) updateTime(event);
 }
 
 async function contextmenu(_: MouseEvent, layer: number) {
@@ -57,7 +64,7 @@ async function contextmenu(_: MouseEvent, layer: number) {
 </script>
 
 <template>
-  <div :class="$style.container" @mousedown.left="outSideMousedown" @mousemove.left="outSideMousemove">
+  <div :class="$style.container" @mousedown="outSideMousedown" @mousemove.left="outSideMousemove">
     <div :class="$style.time" :style="{ left: timeStore.time * zoom + 'px' }"></div>
     <div :class="$style.ruler">
       <div v-for="i in 100" :key="i" :class="$style.mark" :style="{ width: 500 * zoom + 'px' }">
@@ -68,7 +75,7 @@ async function contextmenu(_: MouseEvent, layer: number) {
       <div v-for="item in itemsStore.layers[i] ?? []" :key="item.id"
         :class="[$style.item, { [$style.selected]: itemsStore.selectedItem === item }]"
         :style="{ left: item.time.start * zoom + 'px', width: duration(item.time) * zoom + 'px', '--color': itemMeta[item.kind].color }"
-        @mousedown.stop="itemsStore.selectedItem = item" @contextmenu.stop>
+        @mousedown.stop="itemsStore.selectedItem = item" @contextmenu.stop @mousemove.left.stop>
         {{ item.name }}
       </div>
     </div>
@@ -96,6 +103,7 @@ async function contextmenu(_: MouseEvent, layer: number) {
   height: 100%;
   z-index: 9999;
   border-left: 1px solid red;
+  pointer-events: none;
 }
 
 .ruler {

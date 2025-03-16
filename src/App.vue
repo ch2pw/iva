@@ -9,8 +9,11 @@ import CurveEditor from './panes/CurveEditor.vue';
 import { useItemsStore } from './stores/items';
 import { Menu } from '@tauri-apps/api/menu';
 import { onMounted } from 'vue';
+import { useCursorStore } from './stores/cursor';
+import { map } from './scripts/option-util';
 
 const itemsStore = useItemsStore();
+const cursorStore = useCursorStore();
 
 onMounted(async () => {
   const menu = await Menu.new({
@@ -46,7 +49,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main :class="$style.container">
+  <main :class="$style.container" :style="{ cursor: map(cursorStore.state, (v) => v + '!important') }">
     <SplitterGroup direction="vertical">
       <SplitterPanel :default-size="60">
         <SplitterGroup direction="horizontal">
