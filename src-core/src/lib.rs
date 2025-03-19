@@ -33,7 +33,7 @@ fn parse_color(color: &str) -> Rgba {
     Rgba::from([r, g, b, a])
 }
 
-fn interpolate(points: &[ControlPoint], progress: f64) -> f64 {
+fn interpolate(points: &[ControlPoint<f64>], progress: f64) -> f64 {
     if points.len() == 1 {
         return points[0].value;
     }
@@ -51,12 +51,12 @@ fn interpolate(points: &[ControlPoint], progress: f64) -> f64 {
     }
 }
 
-pub struct ControlPoint {
+pub struct ControlPoint<T> {
     pub progress: f64,
-    pub value: f64,
+    pub value: T,
 }
 
-impl TryFrom<&serde_json::Value> for ControlPoint {
+impl TryFrom<&serde_json::Value> for ControlPoint<f64> {
     type Error = &'static str;
 
     fn try_from(value: &serde_json::Value) -> Result<Self, Self::Error> {
@@ -69,10 +69,10 @@ impl TryFrom<&serde_json::Value> for ControlPoint {
 }
 
 pub struct IvaRect {
-    pub x: Vec<ControlPoint>,
-    pub y: Vec<ControlPoint>,
-    pub width: Vec<ControlPoint>,
-    pub height: Vec<ControlPoint>,
+    pub x: Vec<ControlPoint<f64>>,
+    pub y: Vec<ControlPoint<f64>>,
+    pub width: Vec<ControlPoint<f64>>,
+    pub height: Vec<ControlPoint<f64>>,
     pub color: Rgba,
 }
 
