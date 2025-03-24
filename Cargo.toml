@@ -4,12 +4,5 @@ license = "MIT"
 repository = "https://github.com/1Step621/iva"
 
 [workspace]
-members = ["src-core", "src-tauri", "src-wasm"]
+members = ["src-core", "src-tauri"]
 resolver = "2"
-
-[profile.release]
-lto = true
-opt-level = "s"
-
-[profile.dev]
-debug-assertions = true

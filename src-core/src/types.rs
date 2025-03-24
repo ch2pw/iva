@@ -2,9 +2,8 @@
 use std::{collections::HashMap, time::Duration};
 
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
 
-#[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TimeRange {
     pub start: u64,
     pub end: u64,
@@ -24,14 +23,14 @@ impl TimeRange {
     }
 }
 
-#[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Filter {
     pub kind: String,
     pub name: String,
     pub props: HashMap<String, serde_json::Value>,
 }
 
-#[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Item {
     pub id: String,
     pub layer: i64,

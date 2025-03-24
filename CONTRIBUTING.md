@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for considering contributing to this project! We welcome your contributions even small ones (like fixing typos).
+Thank you for considering contributing to this project! I welcome your contributions even small ones (like fixing typos).
 
 ## Issues
 - Please follow the title format:
@@ -19,31 +19,6 @@ Thank you for considering contributing to this project! We welcome your contribu
 - [Rust, Node.js and Tauri's dependencies](https://v2.tauri.app/ja/start/prerequisites/)
 - [pnpm](https://pnpm.io/installation)
 - [FFmpeg libraries](https://github.com/zmwangx/rust-ffmpeg/wiki/Notes-on-building)
-- [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/)
-- [watchexec](https://github.com/watchexec/watchexec)
-
-### Project structure
-```
-.
-├── src
-│    Tauri frontend
-├── src-core:
-│    Renderer core
-├── src-tauri:
-│    Tauri backend
-└── src-wasm:
-      WebAssembly
-```
-```mermaid
-graph
-    src-core[src-core: Renderer core]
-    src[src: Tauri frontend]
-    src-tauri[src-tauri: Tauri backend]
-    src-wasm[src-wasm: WebAssembly]
-    src-core --> src-tauri
-    src-core --> src-wasm
-    src-wasm --> src
-```
 
 ## Pull requests
 - If you want to add a new feature, please create an issue first.
