@@ -12,7 +12,7 @@ pub async fn render(app: tauri::AppHandle) -> Response {
         let layers = state.layers.clone();
         let time = state.time;
         let image = iva_core::render(&layers, time);
-        Response::new(image.as_raw().to_vec())
+        Response::new(image.to_vec())
     });
     thread.await.unwrap()
 }
