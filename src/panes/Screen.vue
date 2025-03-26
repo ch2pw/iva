@@ -22,10 +22,10 @@ watch([() => itemsStore.layers, () => timeStore.time], () => renderRequested = t
 
 setInterval(async () => {
   if (renderRequested) {
+    renderRequested = false;
     const bytes = await invoke<ArrayBuffer>('render');
     const image = new ImageData(new Uint8ClampedArray(bytes), 1920, 1080);
     ctx.value!.putImageData(image, 0, 0);
-    renderRequested = false;
   }
 }, 30);
 </script>

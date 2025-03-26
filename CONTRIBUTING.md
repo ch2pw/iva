@@ -20,6 +20,14 @@ Thank you for considering contributing to this project! I welcome your contribut
 - [pnpm](https://pnpm.io/installation)
 - [FFmpeg libraries](https://github.com/zmwangx/rust-ffmpeg/wiki/Notes-on-building)
 
+### Words
+- `item`: A item on a timeline, such as a rect, a circle, a text, etc.
+- `filter`: A filter that can be applied to an image of a `item`.
+
+- `draw`: Create an image of a `item`.
+- `apply`: Modify an image of a `item` with a `filter`.
+- `render`: `draw` and `apply`.
+
 ## Pull requests
 - If you want to add a new feature, please create an issue first.
 - Pull requests are squashed and merged, so you may need to create a new branch for each pull request.

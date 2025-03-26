@@ -5,7 +5,6 @@ export type TimeRange = {
 
 export type Filter = {
   kind: string;
-  name: string;
   props: Record<string, any>;
 };
 
@@ -14,9 +13,10 @@ export type Item = {
   layer: number;
   kind: string;
   name: string;
-  time: TimeRange;
   filters: Filter[];
-  props: Record<string, any>;
+  props: {
+    time: TimeRange;
+  } & Record<string, any>;
 };
 
 export type PropDefinition = (

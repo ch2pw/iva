@@ -28,7 +28,7 @@ function outSideMousemove(event: MouseEvent) {
 
 function outSideMousedown(event: MouseEvent) {
   updateTime(event);
-  if (itemsStore.selectedItem && !contains(itemsStore.selectedItem.time, timeStore.time)) {
+  if (itemsStore.selectedItem && !contains(itemsStore.selectedItem.props.time, timeStore.time)) {
     itemsStore.selectedItem = null;
   }
 }
@@ -48,9 +48,11 @@ async function contextmenu(_: MouseEvent, layer: number) {
                   filters: [],
                   kind: kind,
                   name: meta.name,
-                  time: { start: timeStore.time, end: timeStore.time + 1000 },
                   layer: layer,
-                  props: Object.fromEntries(Object.entries(meta.propsDefinition).map(([key, value]) => [key, value.default])),
+                  props: {
+                    time: { start: timeStore.time, end: timeStore.time + 1000 },
+                    ...Object.fromEntries(Object.entries(meta.propsDefinition).map(([key, value]) => [key, value.default]))
+                  },
                 });
               },
             });
@@ -74,7 +76,7 @@ async function contextmenu(_: MouseEvent, layer: number) {
     <div v-for="i in 50" :key="i" :class="$style.layer" @contextmenu.stop.prevent="contextmenu($event, i)">
       <div v-for="item in itemsStore.layers[i] ?? []" :key="item.id"
         :class="[$style.item, { [$style.selected]: itemsStore.selectedItem === item }]"
-        :style="{ left: item.time.start * zoom + 'px', width: duration(item.time) * zoom + 'px', '--color': itemMeta[item.kind].color }"
+        :style="{ left: item.props.time.start * zoom + 'px', width: duration(item.props.time) * zoom + 'px', '--color': itemMeta[item.kind].color }"
         @mousedown.stop="itemsStore.selectedItem = item" @contextmenu.stop @mousemove.left.stop>
         {{ item.name }}
       </div>
