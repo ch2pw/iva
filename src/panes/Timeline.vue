@@ -46,10 +46,10 @@ async function contextmenu(_: MouseEvent, layer: number) {
                 itemsStore.add({
                   id: crypto.randomUUID(),
                   filters: [],
-                  kind: kind,
                   name: meta.name,
                   layer: layer,
                   props: {
+                    kind: kind,
                     time: { start: timeStore.time, end: timeStore.time + 1000 },
                     ...Object.fromEntries(Object.entries(meta.propsDefinition).map(([key, value]) => [key, value.default]))
                   },
@@ -76,7 +76,7 @@ async function contextmenu(_: MouseEvent, layer: number) {
     <div v-for="i in 50" :key="i" :class="$style.layer" @contextmenu.stop.prevent="contextmenu($event, i)">
       <div v-for="item in itemsStore.layers[i] ?? []" :key="item.id"
         :class="[$style.item, { [$style.selected]: itemsStore.selectedItem === item }]"
-        :style="{ left: item.props.time.start * zoom + 'px', width: duration(item.props.time) * zoom + 'px', '--color': itemMeta[item.kind].color }"
+        :style="{ left: item.props.time.start * zoom + 'px', width: duration(item.props.time) * zoom + 'px', '--color': itemMeta[item.props.kind].color }"
         @mousedown.stop="itemsStore.selectedItem = item" @contextmenu.stop @mousemove.left.stop>
         {{ item.name }}
       </div>

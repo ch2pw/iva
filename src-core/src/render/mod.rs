@@ -1,6 +1,12 @@
 use image::RgbaImage;
 
-use crate::parse::ControlPoint;
+use crate::{
+    parse::{
+        ControlPoint,
+        items::{circle::CircleProps, rect::RectProps, text::TextProps},
+    },
+    types::{ItemProps, ParsedItemProps},
+};
 
 pub mod filters;
 pub mod items;
@@ -28,5 +34,14 @@ pub fn interpolate(points: &[ControlPoint<f64>], progress: f64) -> f64 {
         (Some(prev), None) => prev.value,
         (None, Some(next)) => next.value,
         (None, None) => panic!("No control points"),
+    }
+}
+
+pub fn into_drawable(props: ItemProps) -> Box<dyn Draw> {
+    match props.common.kind.as_str() {
+        "circle" => Box::new(ParsedItemProps::<CircleProps>::from(props)),
+        "rect" => Box::new(ParsedItemProps::<RectProps>::from(props)),
+        "text" => Box::new(ParsedItemProps::<TextProps>::from(props)),
+        _ => panic!("Unknown item type"),
     }
 }

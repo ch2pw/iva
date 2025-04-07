@@ -6,13 +6,13 @@ import { computed } from 'vue';
 import Prop from '../components/Prop.vue';
 
 const itemsStore = useItemsStore();
-const propsDefinition = computed(() => itemsStore.selectedItem ? itemMeta[itemsStore.selectedItem.kind].propsDefinition : {});
+const propsDefinition = computed(() => itemsStore.selectedItem ? itemMeta[itemsStore.selectedItem.props.kind].propsDefinition : {});
 </script>
 
 <template>
   <div :class="$style.container">
     <template v-if="itemsStore.selectedItem">
-      <div :class="$style.title">{{ itemMeta[itemsStore.selectedItem.kind].name }}</div>
+      <div :class="$style.title">{{ itemMeta[itemsStore.selectedItem.props.kind].name }}</div>
       <div :class="$style.prop">
         <div>名前</div>
         <TextField v-model="itemsStore.selectedItem.name" />

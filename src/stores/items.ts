@@ -9,16 +9,17 @@ export const useItemsStore = defineStore("items", () => {
       id: "1aea6df4-9bdc-4b7b-b795-96c1346a37ab",
       layer: 1,
       name: "Item 1",
-      kind: "rect",
       filters: [
         {
-          kind: "gaussianBlur",
+          name: "ガウスぼかし",
           props: {
+            kind: "gaussianBlur",
             radius: 10,
           },
         }
       ],
       props: {
+        kind: "rect",
         time: { start: 0, end: 1000 },
         x: [{
           progress: 0,
@@ -45,8 +46,8 @@ export const useItemsStore = defineStore("items", () => {
       layer: 2,
       name: "Item 2",
       filters: [],
-      kind: "circle",
       props: {
+        kind: "circle",
         time: { start: 0, end: 1500 },
         x: 200,
         y: 200,
@@ -59,8 +60,8 @@ export const useItemsStore = defineStore("items", () => {
       layer: 3,
       name: "Item 3",
       filters: [],
-      kind: "text",
       props: {
+        kind: "text",
         time: { start: 0, end: 2000 },
         x: 100,
         y: 100,

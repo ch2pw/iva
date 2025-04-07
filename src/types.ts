@@ -3,20 +3,24 @@ export type TimeRange = {
   end: number;
 }
 
-export type Filter = {
+export type FilterProp = {
   kind: string;
-  props: Record<string, any>;
-};
+} & Record<string, any>;
+
+export type ItemProp = {
+  kind: string;
+  time: TimeRange;
+} & Record<string, any>;
 
 export type Item = {
   id: string;
   layer: number;
-  kind: string;
   name: string;
-  filters: Filter[];
-  props: {
-    time: TimeRange;
-  } & Record<string, any>;
+  filters: {
+    name: string;
+    props: FilterProp;
+  }[];
+  props: ItemProp;
 };
 
 export type PropDefinition = (

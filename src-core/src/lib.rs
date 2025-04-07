@@ -1,15 +1,11 @@
 use std::{collections::HashMap, time::Instant};
 
-use render::{Apply, Draw};
 use image::{Rgba, RgbaImage, imageops::overlay};
-use parse::{
-    filters::gaussian_blur::GaussianBlurProps,
-    items::{circle::CircleProps, rect::RectProps, text::TextProps},
-};
-use types::{Item, ParsedFilterProps, ParsedItemProps};
+use render::{filters::into_appliable, into_drawable};
+use types::Item;
 
-pub mod render;
 pub mod parse;
+pub mod render;
 
 pub mod types;
 
@@ -26,27 +22,16 @@ pub fn render(layers: &HashMap<i32, Vec<Item>>, time: u64) -> RgbaImage {
                 .iter()
                 .find(|item| item.props.common.time.contains(time))
         });
-        if let Some(item) = item {
-            let mut item_image = match item.kind.as_str() {
-                "rect" => ParsedItemProps::<RectProps>::from(item.props.clone()).draw(time),
-                "circle" => ParsedItemProps::<CircleProps>::from(item.props.clone()).draw(time),
-                "text" => ParsedItemProps::<TextProps>::from(item.props.clone()).draw(time),
-                "image" => RgbaImage::from_pixel(0, 0, Rgba([0, 0, 0, 0])),
-                "video" => RgbaImage::from_pixel(0, 0, Rgba([0, 0, 0, 0])),
-                "audio" => RgbaImage::from_pixel(0, 0, Rgba([0, 0, 0, 0])),
-                _ => RgbaImage::from_pixel(0, 0, Rgba([0, 0, 0, 0])),
-            };
-            for filter in &item.filters {
-                match filter.kind.as_str() {
-                    "gaussianBlur" => {
-                        ParsedFilterProps::<GaussianBlurProps>::from(filter.props.clone())
-                            .apply(time, &mut item_image)
-                    }
-                    _ => {}
-                }
-            }
-            overlay(&mut image, &item_image, 0, 0);
+
+        let Some(item) = item else {
+            continue;
+        };
+        
+        let mut item_image = into_drawable(item.props.clone()).draw(time);
+        for filter in &item.filters {
+            into_appliable(filter.props.clone()).apply(time, &mut item_image);
         }
+        overlay(&mut image, &item_image, 0, 0);
     }
 
     println!("Rendered in {:?}", timer.elapsed());

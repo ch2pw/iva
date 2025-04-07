@@ -27,6 +27,7 @@ pub type UniqueProps = HashMap<String, serde_json::Value>;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommonItemProps {
+    pub kind: String,
     pub time: TimeRange,
 }
 
@@ -56,7 +57,9 @@ impl<T: From<UniqueProps>> From<ItemProps> for ParsedItemProps<T> {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CommonFilterProps {}
+pub struct CommonFilterProps {
+    pub kind: String,
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FilterProps {
@@ -85,7 +88,7 @@ impl<T: From<UniqueProps>> From<FilterProps> for ParsedFilterProps<T> {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Filter {
-    pub kind: String,
+    pub name: String,
     pub props: FilterProps,
 }
 
@@ -93,7 +96,6 @@ pub struct Filter {
 pub struct Item {
     pub id: String,
     pub layer: i64,
-    pub kind: String,
     pub name: String,
     pub filters: Vec<Filter>,
     pub props: ItemProps,
