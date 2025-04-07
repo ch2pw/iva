@@ -1,7 +1,7 @@
 use std::{collections::HashMap, time::Instant};
 
 use image::{Rgba, RgbaImage, imageops::overlay};
-use render::{filters::into_appliable, into_drawable};
+use render::{filters::into_applicable, into_drawable};
 use types::Item;
 
 pub mod parse;
@@ -29,7 +29,7 @@ pub fn render(layers: &HashMap<i32, Vec<Item>>, time: u64) -> RgbaImage {
         
         let mut item_image = into_drawable(item.props.clone()).draw(time);
         for filter in &item.filters {
-            into_appliable(filter.props.clone()).apply(time, &mut item_image);
+            into_applicable(filter.props.clone()).apply(time, &mut item_image);
         }
         overlay(&mut image, &item_image, 0, 0);
     }
