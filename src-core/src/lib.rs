@@ -1,7 +1,7 @@
 use std::{collections::HashMap, time::Instant};
 
 use image::{Rgba, RgbaImage, imageops::overlay};
-use render::{filters::into_applicable, into_drawable};
+use render::{filters::into_applicable, items::into_drawable};
 use types::Item;
 
 pub mod parse;
